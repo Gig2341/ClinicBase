@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Flask Application API """
+
 from flask import Blueprint, make_response, jsonify
 from flask_cors import CORS
 
