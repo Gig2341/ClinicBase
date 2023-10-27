@@ -45,17 +45,15 @@ def login():
 
 @bp_auth.route('/logout')
 def logout():
-    with current_app.app_context():
-        if 'custom_user' in session:
-            session.pop('custom_user')
-        else:
-            logout_user()
-        flash('You have been logged out.', 'success')
-        return redirect(url_for('landing_page.home'))
+    if 'custom_user' in session:
+        session.pop('custom_user')
+    else:
+        logout_user()
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('landing_page.home'))
 
 
 @bp_auth.before_request
 def before_request():
-    with current_app.app_context():
-        if check_inactivity('custom_user'):
-            return redirect(url_for('auth.login'))
+    if check_inactivity('custom_user'):
+        return redirect(url_for('auth.login'))
