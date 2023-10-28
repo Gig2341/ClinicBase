@@ -7,9 +7,10 @@ from flask_cors import cross_origin
 from datetime import date, datetime
 from models.case import Case
 from models.patient import Patient
-from models import storage
+from models.engine.db_storage import DBStorage
 
-session = storage._DBStorage__session
+storage = DBStorage()
+session = storage.reload()
 
 
 @bp_api.route('/status', methods=['GET'], strict_slashes=False)
@@ -33,7 +34,7 @@ def patient_count():
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
 
     patient_count = session.query(Patient)\
-        .filter(Patient.update_at.between(start_date, end_date)).count()
+        .filter(Patient.updated_at.between(start_date, end_date)).count()
 
     return jsonify({'patient_count': patient_count})
 
@@ -52,6 +53,6 @@ def case_count():
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
 
     case_count = session.query(Case)\
-        .filter(Case.update_at.between(start_date, end_date)).count()
+        .filter(Case.updated_at.between(start_date, end_date)).count()
 
     return jsonify({'case_count': case_count})

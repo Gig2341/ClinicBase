@@ -8,8 +8,10 @@ from datetime import datetime, timedelta
 from models.receptionist import Receptionist
 from models.optometrist import Optometrist
 from models.custom_user import User
+from models.engine.db_storage import DBStorage
 
-dbsession = storage._DBStorage__session
+storage = DBStorage()
+dbsession = storage.reload()
 
 
 def custom_authentication(app, user_email, user_pass):

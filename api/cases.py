@@ -7,10 +7,11 @@ from flask_cors import cross_origin
 from datetime import date, datetime
 from models.case import Case
 from models.patient import Patient
-from models import storage
 from sqlalchemy import func
+from models.engine.db_storage import DBStorage
 
-session = storage._DBStorage__session
+storage = DBStorage()
+session = storage.reload()
 
 
 @bp_api.route('/cases', methods=['POST'], strict_slashes=False)

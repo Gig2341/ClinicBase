@@ -65,7 +65,8 @@ def put_employee(employee_id):
 
     if 'password' in data:
         password = data['password']
-        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        hashed_password = bcrypt.generate_password_hash(password)\
+            .decode('utf-8')
 
     for key, value in request.get_json().items():
         if key not in ignore:
