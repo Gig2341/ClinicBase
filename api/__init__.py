@@ -12,4 +12,7 @@ def not_found(error):
     return make_response(jsonify({'error': "Not found"}), 404)
 
 
-from api import routes
+from api import index
+from api import patients
+from api import employees
+from api import cases
