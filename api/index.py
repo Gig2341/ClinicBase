@@ -9,7 +9,7 @@ from models.case import Case
 from models.patient import Patient
 from models import storage
 
-dbsession = storage._DBStorage__session
+session = storage._DBStorage__session
 
 
 @bp_api.route('/status', methods=['GET'], strict_slashes=False)
