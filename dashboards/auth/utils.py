@@ -10,8 +10,8 @@ from models.optometrist import Optometrist
 from models.custom_user import User
 from models.engine.db_storage import DBStorage
 
-storage = DBStorage()
-dbsession = storage.reload()
+db_storage = DBStorage()
+dbsession = db_storage.reload()
 
 
 def custom_authentication(app, user_email, user_pass):
