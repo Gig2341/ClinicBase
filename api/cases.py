@@ -61,7 +61,7 @@ def get_matched_patients():
     matching_patients = []
 
     for patient in patients:
-        if any((func.date(case.updated_at) == func.current_date and
+        if any((func.date(case.updated_at) == func.current_date() and
                case.updated_at > case.created_at) for case in patient.cases):
             matching_patients.append(patient.to_dict())
     return jsonify(matching_patients)
@@ -198,5 +198,8 @@ def submit_case(case_id):
                     record.save()
 
                 ret.append(record.to_dict())
+
+    case.updated_at = datetime.utcnow()
+    storage.save()
 
     return jsonify(ret)
