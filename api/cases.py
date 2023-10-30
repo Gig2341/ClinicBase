@@ -158,7 +158,7 @@ def save_case(case_id):
               strict_slashes=False)
 @cross_origin(origins=["127.0.0.1"])
 def submit_case(case_id):
-    """Saves patient's medical records into a case"""
+    """Submit patient's medical records into a case for closure """
     record_type_mapping = {
         'diagnoses': Diagnosis,
         'examinations': Examination,
