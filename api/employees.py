@@ -25,7 +25,7 @@ def get_employee(employee_id):
 @bp_api.route('/employee', methods=['POST'], strict_slashes=False)
 @cross_origin(origins=["127.0.0.1"])
 def post_employee():
-    """ Creates a new employee """
+    """Creates a new employee"""
     if not request.is_json:
         abort(400, description="Not a JSON")
     data = request.get_json()
@@ -35,15 +35,23 @@ def post_employee():
         abort(400, description="Missing email")
     if 'password' not in data:
         abort(400, description="Missing password")
+    if 'role' not in data:
+        abort(400, description="Missing role")
 
     password = data['password']
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
     data['password'] = hashed_password
 
-    if 'license' in data:
-        employee = Optometrist(**data)
-    else:
+    role = data.get('role').lower()
+    if role == "receptionist":
+        data.pop('role', None)
+        data.pop('license', None)
         employee = Receptionist(**data)
+    elif role == "optometrist":
+        if 'license' not in data:
+            abort(400, description="Missing license")
+        data.pop('role', None)
+        employee = Optometrist(**data)
     employee.save()
     return jsonify(employee.to_dict()), 201
 
