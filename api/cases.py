@@ -7,6 +7,7 @@ from flask_cors import cross_origin
 from datetime import date, datetime
 from models.case import Case
 from models.patient import Patient
+from operator import attrgetter
 from sqlalchemy import func, select
 from models import storage
 from models.engine.db_storage import DBStorage
@@ -51,20 +52,26 @@ def post_case():
         return jsonify(existing_case.to_dict())
 
 
-@bp_api.route('/cases/prescription', methods=['GET'], strict_slashes=False)
+@bp_api.route('/cases/completed', methods=['GET'], strict_slashes=False)
 @cross_origin(origins=["127.0.0.1"])
-def get_matched_patients():
-    """ Gets patients' with prescription information """
+def get_completed_cases():
+    """ Gets completed cases with prescription information """
     patients = session.query(Patient)\
         .filter(func.date(Patient.updated_at) == func.current_date()).all()
 
-    matching_patients = []
+    matching_cases = []
 
     for patient in patients:
-        if any((func.date(case.updated_at) == func.current_date() and
-               case.updated_at > case.created_at) for case in patient.cases):
-            matching_patients.append(patient.to_dict())
-    return jsonify(matching_patients)
+        for case in patient.cases:
+            if (
+                func.date(case.updated_at) == func.current_date()
+                and case.updated_at > case.created_at
+            ):
+                matching_cases.append(case)
+
+    matching_cases.sort(key=attrgetter("updated_at"), reverse=True)
+    recent_cases = matching_cases[:5]
+    return jsonify([case.to_dict() for case in recent_cases])
 
 
 @bp_api.route('/cases/queue', methods=['GET'], strict_slashes=False)
