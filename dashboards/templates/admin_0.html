@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- css links go here-->
+    <link rel="stylesheet" href="/dashboards/static/styles/base.css">
+    <link rel="stylesheet" href="/dashboards/templates/styles/main.css">
+    <link rel="stylesheet" href="/dashboards/templates/styles/tab-links.css">
+    <title>ClinicBase - Administrator</title>
+</head>
+<body>
+    <header>
+        <h1>ClinicBase</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#Login">Login</a></li>
+                <li><a href="#Contact">Contact</a></li>
+                <li><a href="#About">About</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="patient-status">
+            <div class="unattended">
+                <h3>Unattended Requests</h3>
+            </div>
+            <div class="attended">
+                <h3>Unattended Requests</h3>
+            </div>
+        </section>
+        <section class="patient-info">
+            <div class="patient-detail">
+                <!-- <div>
+                    <h5>Patient Details</h5>
+                </div> -->
+                <!-- <div class="blank-detail">
+                    <div>
+                        <h6>name</h6>
+                        <h6>DOB</h6>
+                        <h6>Gender</h6>
+                    </div>
+                    <div>
+                        <h6>Address</h6>
+                        <h6>Contact</h6>
+                        <h6>Occupation</h6>
+                    </div>
+
+
+                </div> -->
+
+
+            </div>
+            <div class="patient-history">
+
+                <div class="employee-tab">
+                    <button class="tablinks" onclick="openTab(event, 'Add New Employee')" id="defaultOpen">Add New
+                        Employee</button>
+                    <button class="tablinks" onclick="openTab(event,'Update Employee Info')">Update Employee
+                        Info</button>
+                    <button class="tablinks" onclick="openTab(event,'View Employee Info')">View Employee Info</button>
+                    <button class="tablinks" onclick="openTab(event,'Search Employee Info')">Search Employee
+                        Info</button>
+                </div>
+                <div class="nav-content">
+                    <form action="">
+                        <div id="Add New Employee" class="tabcontent">
+                            <h3>Add New Employee</h3>
+                            <p>Add New Employee here</p>
+                        </div>
+                        <div id="Update Employee Info" class="tabcontent">
+                            <h3>Update Employee Info</h3>
+                            <p>Update Employee Info here</p>
+                        </div>
+                        <div id="View Employee Info" class="tabcontent">
+                            <h3>View Employee Info</h3>
+                            <p>View Employee Info here</p>
+                        </div>
+                        <div id="Search Employee Info" class="tabcontent">
+                            <h3>Search Employee Info</h3>
+                            <p>Search Employee Info here</p>
+                        </div>
+
+                    </form>
+
+                </div>
+
+        </section>
+        <section class="save-patient">
+            <button>View Patient Records</button>
+            <button>Print Patient Info</button>
+            <button>Delete Employee</button>
+            <button>Message Employee</button>
+            
+        </section>
+    </main>
+    <footer>
+        <p>Copyright &copy; <script>document.write(newDate().getFullYear())</script>clinicbase</p>
+    </footer>
+</body>
+<script src="scripts/opto.js"></script>
+</html>
