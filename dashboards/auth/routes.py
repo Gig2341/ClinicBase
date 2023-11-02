@@ -53,4 +53,5 @@ def logout():
 def before_request():
     """ handles expiration of custom session """
     if check_inactivity('custom_user'):
+        logout_user()
         return redirect(url_for('auth.login'))
