@@ -68,10 +68,10 @@ def is_accessible_user(user, page):
 def get_user_default_page(user):
     """ logic to determine the default page for each user type """
     if isinstance(user, Receptionist):
-        return url_for('receptionist.recep')
+        return url_for('recep.recep')
     if isinstance(user, Optometrist):
-        return url_for('optometrist.optom')
-    return url_for('administrator.admin')
+        return url_for('optom.optom')
+    return url_for('admin.admin')
 
 
 @login_manager.user_loader

@@ -46,7 +46,7 @@ def logout():
     """ handles session logout """
     logout_user()
     flash('You have been logged out.', 'success')
-    return redirect(url_for('landing_page.home'))
+    return redirect(url_for('main.home'))
 
 
 @bp_auth.before_request
