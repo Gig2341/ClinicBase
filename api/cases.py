@@ -102,14 +102,12 @@ def get_patient_records(patient_id):
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
 
-    session = Session()
     cases = session.query(Case).filter(
         Case.patient_id == patient_id,
         Case.created_at.between(start_date, end_date)
-    ).all()
+    ).order_by(Case.updated_at.desc()).all()
 
     case_data = [case.to_dict() for case in cases]
-
     for case in case_data:
         case.pop("patient_id", None)
 
@@ -165,7 +163,7 @@ def save_case(case_id):
               strict_slashes=False)
 @cross_origin(origins=["127.0.0.1"])
 def submit_case(case_id):
-    """Submit patient's medical records into a case for closure """
+    """ Submit patient's medical records into a case for closure """
     record_type_mapping = {
         'diagnoses': Diagnosis,
         'examinations': Examination,
