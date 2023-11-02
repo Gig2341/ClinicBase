@@ -3,7 +3,7 @@
 
 from dashboards.auth import bp_auth
 from flask import (request, redirect, url_for, flash, render_template,
-                   )current_app
+                   current_app)
 from flask_login import login_user, logout_user, current_user
 from dashboards.auth.utils import (custom_authentication, check_inactivity,
                                    is_accessible_user, get_user_default_page)
