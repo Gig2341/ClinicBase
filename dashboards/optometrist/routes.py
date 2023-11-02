@@ -3,8 +3,11 @@
 
 from flask import render_template
 from dashboards.optometrist import bp_optom
+from flask_login import login_required, current_user
 
 
-@bp_optom.route("/optom")
+@bp_optom.route("/optom", strict_slashes=False)
+@login_required
 def optom():
+    """" route for optometrist dashboard """
     return render_template('optom.html')

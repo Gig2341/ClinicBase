@@ -1,10 +1,14 @@
 #!/usr/bin/python3
 """Defines a dummy User class."""
 
-class User():
+from flask_login import UserMixin
+
+
+class User(UserMixin):
     """ Represent a custom User Class for admin session creation """
 
-    id = ""
-    name = ""
-    email = ""
-    password = ""
+    def __init__(self, id, name, email, password):
+        self.id = id
+        self.name = name
+        self.email = email
+        self.password = password

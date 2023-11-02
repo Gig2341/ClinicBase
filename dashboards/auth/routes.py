@@ -2,22 +2,21 @@
 """ Handle the user session routes """
 
 from dashboards.auth import bp_auth
-from flask import request, redirect, url_for, flash, render_template, session
+from flask import request, redirect, url_for, flash, render_template
 from flask_login import login_user, logout_user, current_user
-from dashboards.auth.utils import custom_authentication, check_inactivity
-from models.optometrist import Optometrist
-from models.receptionist import Receptionist
+from dashboards.auth.utils import (custom_authentication, check_inactivity,
+                                   is_accessible_user, get_user_default_page)
 
 
-@bp_auth.route('/login', methods=['GET', 'POST'])
+@bp_auth.route('/login', methods=['GET', 'POST'], strict_slashes=False)
 def login():
-    if 'custom_user' in session:
-        return redirect(url_for('administrator.admin'))
+    """ handles session login """
     if current_user.is_authenticated:
-        if isinstance(current_user, Receptionist):
-            return redirect(url_for('receptionist.recep'))
-        if isinstance(current_user, Optometrist):
-            return redirect(url_for('optometrist.optom'))
+        redirect_to = get_user_default_page(current_user)
+        return redirect(redirect_to)
+
+    next_page = request.args.get('next')
+    redirect_to = None
 
     if request.method == 'POST':
         email = request.form.get('email')
@@ -25,35 +24,33 @@ def login():
 
         user = custom_authentication(app, email, password)
 
-        if isinstance(user, Receptionist):
+        if user:
             login_user(user, remember=True)
             flash('Login successful.', 'success')
-            return redirect(url_for('receptionist.recep'))
-        elif isinstance(user, Optometrist):
-            login_user(user, remember=True)
-            flash('Login successful.', 'success')
-            return redirect(url_for('optometrist.optom'))
-        elif user:
-            user = session.get('custom_user')
-            flash('Login successful.', 'success')
-            return redirect(url_for('administrator.admin'))
+
+            if next_page and is_accessible_user(user, next_page):
+                redirect_to = next_page
+
+            if not redirect_to:
+                redirect_to = get_user_default_page(user)
+
+            return redirect(redirect_to)
         else:
             flash('Login failed. Please check your credentials.', 'danger')
 
     return render_template('login.html')
 
 
-@bp_auth.route('/logout')
+@bp_auth.route('/logout', strict_slashes=False)
 def logout():
-    if 'custom_user' in session:
-        session.pop('custom_user')
-    else:
-        logout_user()
+    """ handles session logout """
+    logout_user()
     flash('You have been logged out.', 'success')
     return redirect(url_for('landing_page.home'))
 
 
 @bp_auth.before_request
 def before_request():
+    """ handles expiration of custom session """
     if check_inactivity('custom_user'):
         return redirect(url_for('auth.login'))

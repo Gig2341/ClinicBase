@@ -3,8 +3,11 @@
 
 from flask import render_template
 from dashboards.administrator import bp_admin
+from flask_login import current_user, login_required
 
 
-@bp_admin.route("/admin")
+@bp_admin.route("/admin", strict_slashes=False)
+@login_required
 def admin():
+    """ route for administrators dashboard """
     return render_template('admin.html')
