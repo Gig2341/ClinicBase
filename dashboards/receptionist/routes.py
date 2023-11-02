@@ -8,6 +8,6 @@ from flask_login import login_required, current_user
 
 @bp_recep.route("/recep", strict_slashes=False)
 @login_required
-def recep():
+def dashboard_recep():
     """ route for receptionist dashboard """
     return render_template('recep.html')

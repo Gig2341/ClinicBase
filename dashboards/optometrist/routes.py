@@ -8,6 +8,6 @@ from flask_login import login_required, current_user
 
 @bp_optom.route("/optom", strict_slashes=False)
 @login_required
-def optom():
+def dashboard_optom():
     """" route for optometrist dashboard """
     return render_template('optom.html')

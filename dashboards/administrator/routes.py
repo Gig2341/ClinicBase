@@ -8,6 +8,6 @@ from flask_login import current_user, login_required
 
 @bp_admin.route("/admin", strict_slashes=False)
 @login_required
-def admin():
+def dashboard_admin():
     """ route for administrators dashboard """
     return render_template('admin.html')
