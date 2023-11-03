@@ -15,13 +15,14 @@ from models.optometrist import Optometrist
 from models.patient import Patient
 from models.receptionist import Receptionist
 from models.test import Test
+from models.custom_user import Admin
 from models.base_model import BaseModel
 import shlex  # for splitting the line along spaces except in double quotes
 
 classes = {"Case": Case, "Diagnosis": Diagnosis, "Drug": Drug,
            "Test": Test, "Examination": Examination, "History": History,
            "Lens": Lens, "Optometrist": Optometrist, "Patient": Patient,
-           "Receptionist": Receptionist}
+           "Receptionist": Receptionist, "Admin": Admin}
 
 
 class HBNBCommand(cmd.Cmd):

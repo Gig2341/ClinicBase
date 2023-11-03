@@ -24,19 +24,19 @@
         <!-- main content goes here  -->
         <div class="loginbox">
             <h1>Login Here</h1>
-            <form action="" id="login" name="login">
-              <p>Username</p>
-              <input type="text" name="" placeholder="Enter Username" required>
-              <p>Password</p>
-              <input type="password" name="" placeholder="Enter Password" required>
-              <input type="submit" name="" value="Login">
-              <a href="#">Lost your password?</a><br>
-              <a href="#contact">Don't have an account?</a>
+            <form method="POST" action="" id="login" name="login">
+                <p>Email</p>
+                <input type="email" name="email" placeholder="Enter Email" required>
+                <p>Password</p>
+                <input type="password" name="password" placeholder="Enter Password" required>
+                <input type="submit" name="submit" value="Login">
+                <a href="#">Lost your password?</a><br>
+                <a href="#contact">Don't have an account?</a>
             </form>
         </div>
     </main>
     <footer>
-        <p>Copyright &copy; <script>document.write(newDate().getFullYear())</script>clinicbase</p>
+        <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> clinicbase</p>
     </footer>
 </body>
 </html>

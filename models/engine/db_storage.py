@@ -12,6 +12,7 @@ from models.optometrist import Optometrist
 from models.patient import Patient
 from models.receptionist import Receptionist
 from models.test import Test
+from models.custom_user import Admin
 from os import getenv
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
@@ -21,7 +22,7 @@ import models
 classes = {"Case": Case, "Diagnosis": Diagnosis, "Drug": Drug,
            "Test": Test, "Examination": Examination, "History": History,
            "Lens": Lens, "Optometrist": Optometrist, "Patient": Patient,
-           "Receptionist": Receptionist}
+           "Receptionist": Receptionist, "Admin": Admin}
 
 load_dotenv()
 
