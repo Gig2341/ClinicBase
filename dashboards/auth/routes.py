@@ -48,5 +48,5 @@ def login():
 @bp_auth.route('/logout', strict_slashes=False)
 def logout():
     logout_user()
-    return redirect(url_for('main.home'))
+    return redirect(url_for('auth.login'))
 

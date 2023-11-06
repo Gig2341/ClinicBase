@@ -3,96 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    <link rel="stylesheet" href="../static/styles/base.css">
+    <link rel="stylesheet" href="../static/styles/main.css">
+    <link rel="stylesheet" href="../static/styles/tab-links.css">
     <link rel="icon" href="{{ url_for('static', filename='images/Logo.png') }}">
-    <title>ClinicBase</title>
+    <title>ClinicBase - Administrator</title>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-            <div class="container">
-                <a class="navbar-brand" href="#">ClinicBase</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <h1>ClinicBase</h1>
+        <div id="api-status"></div>
+        <nav class="logout">
+            <ul>
+                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                
+            </ul>
         </nav>
     </header>
-
-    <main class="container">
-        <section class="patient-status col-4">
-            <h3>Search Employee Info</h3>
-            <form method="POST" action="/search">
-                <div class="form-group">
-                    <label for="search_object">Search By:</label>
-                    <select name="search_object" id="search_object" class="form-control">
-                        <option value="fname">First Name</option>
-                        <option value="sname">Surname</option>
-                        <option value="email">Email</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="search_query">Search Employee:</label>
-                    <input type="text" name="search_query" id="search_query" class="form-control" placeholder="Enter search query" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Search</button>
-            </form>
-            <h3>Search Results</h3>
-            <p>Search results go here</p>
-        </section>
-
-        <section class="patient-info col-8">
-            <div class="patient-detail">
-                <!-- Employee details here -->
+    <div class="container">
+        <div class="employee-bar">
+	    <div id="responseContainer">
+	        <!-- CRUD Success Message -->
             </div>
-            <div class="patient-history">
-                <div class="employee-tab">
-                    <button class="tablinks active" onclick="openTab(event, 'Add New Employee')" id="defaultOpen">Add New Employee</button>
-                    <button class="tablinks" onclick="openTab(event,'Update Employee Info')">Update Employee Info</button>
-                    <button class="tablinks" onclick="openTab(event,'View Employee Info')">View Employee Info</button>
-                    <button class="tablinks" onclick="openTab(event,'Delete Employee Info')">Delete Employee Info</button>
-                </div>
-                <div class="nav-content">
-                    <form action="">
-                        <div id="Add New Employee" class="tabcontent">
-                            <h3>Add New Employee</h3>
-                            <form action="">
-                                <div class="form-group">
-                                    <label for="fname">First name:</label>
-                                    <input type="text" id="fname" name="fname" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="sname">Surname:</label>
-                                    <input type="text" id="sname" name "sname" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email:</label>
-                                    <input type="email" id="email" name="email" class="form-control" required>
-                                </div>
-                                <!-- Other input fields go here -->
-                                <button type="submit" class="btn btn-primary">Save Employee</button>
-                            </form>
-                        </div>
-                        <!-- Other tab content sections go here -->
+            <div>
+                <h4>Patient Count     <button id="patientCountBtn">Count Patients</button></h4>
+                <h6 id="patientCount">Number: </h6> 
+                
+            </div>
+            <div>
+                <form>
+                    <br>
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate" name="start_Sdate" required><br><br>                                    
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate" name="end_date" required><br><br>
+                                
+                    
+                </form>
+
+            </div>
+
+            <div>
+                <h4>Case Count     <button id="caseCountBtn">Count Cases</button></h4>
+                <h6 id="caseCount"> Number: </h6>                
+            </div>
+
+        </div>
+
+        <main>
+            <section class="patient-status">
+                <div>
+                    <h4>Employee Section</h4>
+                    <form id="searchEmployeeForm">
+                        <label for="searchFilter">Search By:</label>
+                        <select id="searchFilter" name="searchFilter" required>
+                            <option value="name">Name</option>                            
+                            <option value="email">Email</option>
+                        </select><br><br>
+                        <label for="searchText">Search Employee:</label><br>
+                        <input type="text" id="searchText" name="searchText" placeholder="Enter search query"
+                            required><br><br>
+                        
+                        <button type="submit">Search</button>
                     </form>
+                    <h4>Search Results</h4>
+		    <ul id="emp-radio-button-list">
+                        <!-- Empployee search will be added dynamically -->
+                    </ul>
+                    <button id="deleteEmployeeButton">Delete Employee</button>
                 </div>
-            </div>
-        </section>
-    </main>
+            </section>
+            <section class="patient-info">
+                <div class="patient-detail">
 
-    <footer class="container mt-3">
-        <p class="text-center">Copyright &copy; <script>document.write(new Date().getFullYear())</script> ClinicBase</p>
+                </div>
+                <div class="patient-history">
+
+                    <div class="employee-tab">
+                        <button class="tablinks" onclick="openTab(event, 'Add New Employee')" id="defaultOpen">Add New
+                            Employee</button>
+                        <button class="tablinks" onclick="openTab(event,'Update Employee Info')">Update Employee
+                            Info</button>
+                       
+                    </div>
+                    <div class="nav-content">
+                        <form id="createEmployeeForm">
+                            <div id="Add New Employee" class="tabcontent">
+                                <h3>Add New Employee</h3>
+                                <form id="createEmployeeForm">
+                                    <label for="name">Name:</label>
+                                    <input type="text" id="name" name="name" required><br><br>                                    
+                                    <label for="email">Email:</label>
+                                    <input type="email" id="email" name="email" required><br><br>
+                                    <label for="psword">Password:</label>
+                                    <input type="password" id="psword" name="password" required><br><br>                                
+                                    
+                                    <label for="role">Role:</label>
+                                    <select name="role" id="role">
+                                        <option value="optometrist">optometrist</option>
+                                        <option value="receptionist">receptionist</option>
+                                    </select><br><br>                                    
+                                    <label for="licenseNumber">License Number:</label>
+                                    <input type="text" id="licenseNumber" name="license"><br><br>
+                                    
+                                    <input type="submit" id="createEmployeeButton" value="Save Patient">
+                                </form>
+                            </div>
+                            <div id="Update Employee Info" class="tabcontent">
+                                <h3>Update Employee Info</h3>
+                                <form id="updateEmployeeForm">                           
+                                                                     
+                                    <label for="email">Email:</label>
+                                    <input type="email" id="email" name="email" required><br><br>                                   
+                                    <label for="psword">Password:</label>
+                                    <input type="password" id="psword" name="password" required><br><br>
+                                    <input type="submit" id="updateEmployeeButton" value="Save Patient">
+                                </form>
+                            </div>
+                            
+
+                        </form>
+
+                    </div>
+
+            </section>
+
+            <section class="save-patient">
+                <div>
+                    <h4>Patient Section</h4>
+                    <form id="searchPatientForm">
+                        <label for="searchText">Search Patient:</label><br>
+                        <input type="text" id="searchText" name="searchText" placeholder="Enter search query"
+                            required><br><br>
+                        <label for="search_object">Search Patient By:</label><br>
+                        <select id="searchFilter" name="searchFilter" required>
+                            <option value="firstname">First Name</option>
+                            <option value="surname">Surname</option>
+                            <option value="insurance">Insurance</option>
+                        </select>
+                        <button type="submit">Search</button>
+                    </form>
+                    <h3>Search Results</h3>
+		    <ul id="radio-button-list">
+                        <!-- Empployee search will be added dynamically -->
+                    </ul>
+                </div>
+                <button>View Patient Records</button>
+                
+            </section>
+        </main>
+        
+    </div>
+    <footer>
+        <p>Copyright &copy; <script>document.write(newDate().getFullYear())</script>clinicbase</p>
     </footer>
-
+    <script src="{{ url_for('static', filename='scripts/role.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/admin.js') }}"></script>
 </body>
 </html>

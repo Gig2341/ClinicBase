@@ -1,34 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- css links go here-->
-    <link rel="stylesheet" href="dashboards/static/styles/base.css">
-    <link rel="stylesheet" href="dashboards/static/styles/main.css">
-    <link rel="stylesheet" href="dashboards/static/styles/tab-links.css">
-    <title>ClinicBase</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <link rel="stylesheet" href="../static/styles/base.css">
+    <link rel="stylesheet" href="../static/styles/main.css">
+    <link rel="stylesheet" href="../static/styles/tab-links.css">
+    <title>ClinicBase - Receptionist</title>
 </head>
-
 <body>
+    <header>
+        <h1>ClinicBase</h1>
+        <div id="api-status"></div>
+        <nav class="logout">
+            <ul>
+                <li><a href="#Logout">Logout</a></li>
+                
+            </ul>
+        </nav>
+    </header>
     <div class="container">
-        <header>
+        <div class="employee-bar">
             <div>
                 <h3>Reception name</h3>
             </div>
-            <div>
-                <a href="/logout">Logout</a>
-            </div>
+            
 
-        </header>
+        </div>
         <main>
             <section class="patient-status">
-                <div class="unattended">
-                    <h3>Unattended Patients</h3>
-                </div>
-                <div class="attended">
-                    <h3>Unattended Patients</h3>
+                <div>
+                    <h3>Search Employee Info</h3>
+                    <form method="POST" action="/search">
+                        <label for="search_query">Search Patient:</label><br>
+                        <input type="text" name="search_query" id="search_query" placeholder="Enter search query"
+                            required><br><br>
+                        <label for="search_object">Search Patient By:</label><br>
+                        <select name="search_object" id="search_object">
+                            <option value="fname">First Name</option>
+                            <option value="sname">SurName</option>
+                            <option value="date">Insurance</option>
+
+                        </select>
+                        <button type="submit">Search</button>
+                    </form>
+                    <h3>Search Results</h3>
+                    <p> search results goes here</p>
+                    <button>Send to Doctor</button>
+                    <button>Delete Patient</button>
+
+                    
                 </div>
             </section>
             <section class="patient-info">
@@ -38,14 +59,11 @@
                     </div>
                     <div class="blank-detail">
                         <div>
-                            <h6>name</h6>
-                            <h6>DOB</h6>
-                            <h6>Gender</h6>
-                        </div>
-                        <div>
-                            <h6>Address</h6>
-                            <h6>Contact</h6>
-                            <h6>Occupation</h6>
+                            <h5>name</h5>
+                            <h5>Dob</h5>
+                            <h5>Occupation</h5>
+                            <h5>Contact</h5>                                                                           
+                            
                         </div>
 
 
@@ -60,49 +78,58 @@
                             Patient</button>
                         <button class="tablinks" onclick="openTab(event,'Update Patient Info')">Update Patient
                             Info</button>
-                        <button class="tablinks" onclick="openTab(event,'View Patient Info')">View Patient Info</button>
-                        <button class="tablinks" onclick="openTab(event,'Search Patient Info')">Search Patient
-                            Info</button>
+                        
                     </div>
                     <div class="nav-content">
                         <form action="">
                             <div id="Add New Patient" class="tabcontent">
                                 <h3>Add New Patient</h3>
-                                <p>Add New Patient here</p>
+                                <form action="">
+                                    <label for="fname">First name:</label>
+                                    <input type="text" id="fname" name="firstname" required><br><br>
+                                    <label for="sname">Surname:</label>
+                                    <input type="text" id="sname" name="surname" required><br><br>
+                                    <label for="DOB">Date of Birth:</label>
+                                    <input type="text" id="DOB" name="dob" required><br><br>
+                                    
+                                    <label for="phone">Phone Number:</label>
+                                    <input type="tel" id="phone" name="tel" required><br><br>
+                                    <label for="Occu">Occupation:</label>
+                                    <input type="text" id="occu" name="occupation" required><br><br>
+                                    <label for="insur">Insurance:</label>
+                                    <input type="text" id="insur" name="insurance"><br><br>
+                                    <input type="submit" value="Save Patient">
+                                  </form>
                             </div>
                             <div id="Update Patient Info" class="tabcontent">
                                 <h3>Update Patient Info</h3>
-                                <p>Update Patient Info here</p>
+                                <form action="">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="tel"><br><br>
+                                    <label for="insur">Insurance:</label>
+                                    <input type="text" id="insur" name="insurance"><br><br>
+                                    <input type="submit" value="Update Patient">
+
+                                </form>
                             </div>
-                            <div id="View Patient Info" class="tabcontent">
-                                <h3>View Patient Info</h3>
-                                <p>View Patient Info here</p>
-                            </div>
-                            <div id="Search Patient Info" class="tabcontent">
-                                <h3>Search Patient Info</h3>
-                                <p>Search Patient Info here</p>
-                            </div>
+                            
 
                         </form>
 
                     </div>
 
             </section>
-            <section class="save-patient">
-                <button>New Patient</button>
-                <button>View Previous Case</button>
-                <button>Referal note</button>
-                <button>Request Lab</button>
-                <button>Notify Doc</button>
-                <button>Send to Doctor</button>
+            <section class="save-patient">                
+                <h3>Attended Patients   <button>Refresh</button></h3><br>
+                <p>attended patients dey here wai</p><br>
+                
+                
             </section>
         </main>
-        <footer>
-            <!-- footer goes here-->
-            footer wai
-        </footer>
-        <script src="dashboard/static/scripts/opto.js"></script>
     </div>
+    <footer>
+        <p>Copyright &copy; <script>document.write(newDate().getFullYear())</script>clinicbase</p>
+    </footer>
+    <script src="../static/scripts/main.js"></script>
 </body>
-
 </html>
