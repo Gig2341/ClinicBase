@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/tab-links.css">
+    <link rel="stylesheet" href="../static/styles/main.css">
+    <link rel="stylesheet" href="../static/styles/tab-links.css">
     <!-- <link rel="stylesheet" href="styles/common-footer.css">     -->
     <title>ClinicBase</title>
 </head>
@@ -16,7 +16,7 @@
                 <h3>Doc Afreh</h3>
             </div>
             <div>
-                <a href="/logout">Logout</a>
+		<h3><a href="logout">Logout</a></h3>
             </div>
 
         </header>
@@ -27,6 +27,25 @@
                 </div>
                 <div class="attended">
                     <h3>Unattended Patients</h3>
+                </div>
+                <div>
+                    <h3>Search Patient Info</h3>
+                    <form method="POST" action="/search">
+                        <label for="search_query">Search Patient:</label>
+                        <input type="text" name="search_query" id="search_query" placeholder="Enter search query"
+                            required>
+                        <label for="search_object">Search Patient By:</label>
+                        <select name="search_object" id="search_object">
+                            <option value="fname">First Name</option>
+                            <option value="sname">SurName</option>
+                            <option value="date">Date</option>
+                            <option value="diagnosis">Diagnosis</option>
+
+                        </select>
+                        <button type="submit">Search</button>
+                    </form>
+                    <h3>Search Results</h3>
+                    <p> search results goes here</p>
                 </div>
             </section>
             <section class="patient-info">
@@ -67,28 +86,61 @@
                             <form action="">
                                 <div id="History" class="tabcontent">
                                     <h3>History</h3>
-                                    <p>Type patient history here</p>
+                                    <label for="p-ocular-hx">POHx:</label>
+                                    <textarea id="p-ocular-hx" name="p-ocular-hx" required></textarea><br><br>
+                                    <label for="p-medical-hx">PMHx:</label>
+                                    <textarea id="p-medical-hx" name="p-medical-hx" required></textarea><br><br>
+                                    <label for="f-ocular-hx">FOHx:</label>
+                                    <textarea id="f-ocular-hx" name="f-ocular-hx" required></textarea><br><br>
+                                    <label for="f-medical-hx">FMHx:</label>
+                                    <textarea id="f-medical-hx" name="f-medical-hx" required></textarea><br><br>
                                 </div>
                                 <div id="Examination" class="tabcontent">
                                     <h3>Examination</h3>
-                                    <p>Type patient Examination results here</p>
+                                    <label for="visual-acuity">Visual Acuity:</label>
+                                    <textarea id="visual-acuity" name="visual-acuity" required></textarea><br><br>
+                                    <label for="ocular-exam">Ocular Examination:</label>
+                                    <textarea id="ocular-exam" name="ocular-exam" required></textarea><br><br>
+                                    <label for="chief-complaint">Chief Complaint:</label>
+                                    <textarea id="chief-complaint" name="chief-complaint" required></textarea><br><br>
+                                    <label for="on-direct-questions">On Direct Questions:</label>
+                                    <textarea id="on-direct-questions" name="on-direct-questions"></textarea><br><br>
+                                    <label for="iop">Intraocular Pressure (IOP):</label>
+                                    <textarea id="iop" name="iop" required></textarea><br><br>
+                                    <label for="blood-pressure">Blood Pressure:</label>
+                                    <textarea id="blood-pressure" name="blood-pressure" required></textarea><br><br>
+                                    <label for="blood-sugar">Blood Pressure:</label>
+                                    <textarea id="blood-sugar" name="blood-sugar" required></textarea><br><br>
                                 </div>
                                 <div id="Tests" class="tabcontent">
                                     <h3>Tests</h3>
-                                    <p>Type patient tests results here</p>
+                                    <label for="retinoscopy">Retinoscopy:</label>
+                                    <textarea id="retinoscopy" name="retinoscopy" required></textarea><br><br>
+                                    <label for="autorefraction">Autorefraction:</label>
+                                    <textarea id="autorefraction" name="autorefraction" required></textarea><br><br>
+                                    <label for="subjective_refraction">Subjective Refraction:</label>
+                                    <textarea id="subj-refraction" name="subj-refraction" required></textarea><br><br>
+                                    <label for="other_tests">Other Tests:</label>
+                                    <textarea id="other-test" name="other-test" required></textarea><br><br>
                                 </div>
                                 <div id="Diagnosis" class="tabcontent">
                                     <h3>Diagnosis</h3>
-                                    <p>Type patient diagnosis here</p>
+                                    <label for="principal-diagnosis">Principal Diagnosis:</label>
+                                    <textarea id="principal-diagnosis" name="principal_diagnosis" required></textarea><br><br>
+                                    <label for="other-diagnosis-1">Other Diagnosis 1:</label>
+                                    <textarea id="other-diagnosis-1" name="other-diagnosis-1"></textarea><br><br>
+                                    <label for="other_diagnosis_2">Other Diagnosis 2:</label>
+                                    <textarea id="other-diagnosis-2" name="other-diagnosis-2"></textarea><br><br>
                                 </div>
                                 <div id="Medication" class="tabcontent">
                                     <h3>Medication</h3>
-                                    <p>Type patient Medication here</p>
+                                    <label for="drug">Prescribed Medication:</label>
+                                    <textarea id="drug" name="drug" required></textarea>
                                 </div>
                                 <div id="Lens Prescription" class="tabcontent">
                                     <h3>Lens Prescription</h3>
-                                    <p>Type patient lens Prescription here</p>
-                                </div>
+                                    <label for="lens_rx">Lens Prescription:</label>
+                                    <textarea id="lens_rx" name="lens_rx" required></textarea>
                             </form>
                             
                         </div>
@@ -100,14 +152,14 @@
                 <button>Referal note</button>
                 <button>Request Lab</button>
                 <button>Save</button>
-                <button>Send</button>
+                <button>Done</button>
             </section>
         </main>
         <footer>
             <!-- footer goes here-->
             footer wai
         </footer>
-        <script src="scripts/opto.js"></script>
+        <script src="../static/scripts/main.js"></script>
     </div>
 </body>
 

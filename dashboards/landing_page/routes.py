@@ -9,7 +9,7 @@ from dashboards.landing_page import bp_main
 @bp_main.route("/home", strict_slashes=False)
 def home():
     """ route for homepage """
-    return render_template('index.html')
+    return render_template('home.html')
 
 
 @bp_main.route("/about", strict_slashes=False)

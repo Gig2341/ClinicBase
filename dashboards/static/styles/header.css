@@ -1,0 +1,28 @@
+/* Custom CSS */
+.navbar-expand-sm {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.navbar-brand {
+    margin-right: 10rem; /* A very large right margin */
+    margin-left: 7rem; /* A very large right margin */
+}
+
+.navbar-nav {
+    flex-grow: 1;
+    justify-content: center; /* Center the header tabs */
+    margin: 0;
+    padding: 0;
+    max-width: 50%; /* Reduce the header width to 50% of the viewport width */
+}
+
+.navbar-nav .nav-item {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-nav .nav-link {
+    padding: 1rem 2rem; /* Adjust the padding as needed */
+}

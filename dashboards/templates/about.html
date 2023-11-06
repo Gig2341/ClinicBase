@@ -35,40 +35,19 @@
             </div>
         </nav>
     </header>
-    <main role="main">
-        <div class="container mt-3 ml-3">
-            <div class="row">
-                <div class="col-md-8">
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">
-                            {{ message }}
-                        </div>
-                        {% endfor %}
-                    {% endif %}
-                    {% endwith %}
-                </div>
+    <main class="container mt-3">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="mt-4">About ClinicBase DBMS</h3>
+                <p class="text-justify">At ClinicBase, we're passionate about transforming healthcare in Ghana. Our state-of-the-art Database Management System (DBMS) is designed to optimize clinical operations for eye clinics, ENT clinics, and dental clinics.</p>
+                <p class="text-justify">We tackle the challenge of fragmented data management, aiming to streamline workflows, improve data accuracy, enhance data security and privacy, enable data analytics, and ensure scalability. Our primary focus is on improving internal clinical workflows and data management, ultimately enhancing patient care and the efficiency of healthcare providers.</p>
+                <p class="text-justify">While we don't provide patient dashboards or appointment booking through the web application, we empower healthcare professionals and patients by offering user-friendly department-specific dashboards for streamlined patient record management and medical data retrieval.</p>
+                <p class="mb-4 text-justify">Join us in our mission to create a more efficient and secure healthcare system in Ghana. Contact us to learn more about ClinicBase DBMS and how it can empower your clinic.</p>
+                <a href="{{ url_for('main.contact') }}" class="btn btn-primary">CONTACT US</a>
             </div>
-            <h2>Login Here</h2>
-            <form method="POST" action="" id="login" name="login">
-                <div class="mb-3 mt-3">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control col-6" id="email" placeholder="Enter email" name="email" required>
-                </div>
-                <div class="mb-3">
-                    <label for="pwd">Password:</label>
-                    <input type="password" class="form-control col-6" id="pwd" placeholder="Enter password" name="password" required>
-                </div>
-                <div class="form-check mb-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="remember"> Remember me
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
         </div>
     </main>
+
     <footer class="mt-3 ml-3">
         <p style="padding-left: 20px;">Copyright &copy; <script>document.write(new Date().getFullYear())</script> clinicbase</p>
     </footer>
