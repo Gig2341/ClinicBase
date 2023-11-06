@@ -1,8 +1,8 @@
 let employeeId = null;
 
 function searchEmployee () {
-  const searchText = document.getElementById('searchText').value;
-  const searchFilter = document.getElementById('searchFilter').value;
+  const searchText = document.getElementById('empSearchText').value;
+  const searchFilter = document.getElementById('empSearchFilter').value;
   const radioList = document.getElementById('emp-radio-button-list');
 
   radioList.innerHTML = '';
@@ -161,9 +161,6 @@ document.addEventListener('DOMContentLoaded', function () {
         apiStatusElement.classList.remove('available');
       }
     })
-    .catch(error => {
-      console.error('An error occurred:', error);
-    });
 });
 
 document.getElementById('patientCountBtn').addEventListener('click', findPatientCount);
