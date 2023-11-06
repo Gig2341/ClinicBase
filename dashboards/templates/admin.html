@@ -13,7 +13,7 @@
 <body>
     <header>
         <h1>ClinicBase</h1>
-        <div id="api-status"></div>
+        <div id="api_status"></div>
         <nav class="logout">
             <ul>
                 <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
@@ -44,7 +44,7 @@
                 <form>
                     <br>
                     <label for="startDate">Start Date:</label>
-                    <input type="date" id="startDate" name="start_Sdate" required><br><br>                                    
+                    <input type="date" id="startDate" name="start_date" required><br><br>                                    
                     <label for="endDate">End Date:</label>
                     <input type="date" id="endDate" name="end_date" required><br><br>
                                 
@@ -105,8 +105,8 @@
                                     <input type="text" id="name" name="name" required><br><br>                                    
                                     <label for="email">Email:</label>
                                     <input type="email" id="email" name="email" required><br><br>
-                                    <label for="psword">Password:</label>
-                                    <input type="password" id="psword" name="password" required><br><br>                                
+                                    <label for="password">Password:</label>
+                                    <input type="password" id="password" name="password" required><br><br>                                
                                     
                                     <label for="role">Role:</label>
                                     <select id="role" name="role" required>
@@ -124,7 +124,7 @@
                                 <form id="updateEmployeeForm">                           
                                                                      
                                     <label for="email">Email:</label>
-                                    <input type="email" id="email" name="email" required><br><br>                                   
+                                    <input type="email" id="uemail" name="email" required><br><br>                                   
                                     <label for="psword">Password:</label>
                                     <input type="password" id="psword" name="password" required><br><br>
                                     <input type="submit" id="updateEmployeeButton" value="Save Patient">
