@@ -45,8 +45,9 @@ header #api-status {
 }
 
 header #api-status.available {
-  background-color: #ff545f;
+  background-color: #FFFFFF;
 }
+
 nav{
   background: #F4F4F4;
   padding: 10px;
