@@ -79,14 +79,13 @@ function makeDeleteRequest (patientId) {
 }
 
 function makeSendToDoctorRequest (patientId) {
-
   fetch(`https://clinicbase.tech/get_patient/${patientId}`)
     .then(response => {
       return response.json();
     })
     .then(data => {
       displayPatientInfo(data, 'Scheduled');
-    })
+    });
 }
 
 function handleSelection () {
@@ -97,7 +96,8 @@ function handleSelection () {
     const selectedPatient = fetchedPatientData.find(patient => patient.id === patientId);
 
     if (selectedPatient) {
-    displayPatientInfo(selectedPatient);
+      displayPatientInfo(selectedPatient);
+    }
   }
 }
 
@@ -117,7 +117,7 @@ function displayPatientInfo (data, status) {
 
   patientInfoElement.innerHTML = `${statusHTML}<h4>Patient Information:</h4>
     <div>
-        <p>Fisrt Name: ${data.firstname}</p>
+        <p>First Name: ${data.firstname}</p>
         <p>Surname: ${data.surname}</p>
     </div>
     <div>
@@ -174,14 +174,13 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function getCompletedCases () {
-
   fetch('http://clinicbase.tech/cases/completed')
     .then(response => {
       return response.json();
     })
     .then(data => {
       displayCompletedCases(data);
-    })
+    });
 }
 
 function displayCompletedCases (data) {
@@ -200,7 +199,7 @@ function displayCompletedCases (data) {
 document.getElementById('patientPrescriptionButton').addEventListener('click', getCompletedCases);
 
 document.getElementById('searchPatientForm').addEventListener('submit', function () {
-  searchEmployee();
+  searchPatient();
 });
 
 document.getElementById('updatePatientForm').addEventListener('submit', function (event) {
