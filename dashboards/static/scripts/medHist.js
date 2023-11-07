@@ -1,7 +1,7 @@
 function medHistoryAPICalls () {
   const searchText = document.getElementById('searchText').value;
   const searchFilter = document.getElementById('searchFilter').value;
-  const radioList = document.getElementById('emp-radio-button-list');
+  const radioList = document.getElementById('radio-button-list');
   let patientId = null;
 
   const requestData = {

@@ -33,6 +33,12 @@ def patient_count():
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
 
+    today = datetime.today()
+    if start_date > today:
+        start_date = today
+    if end_date > today:
+        end_date = today
+
     patient_count = session.query(Patient)\
         .filter(Patient.updated_at.between(start_date, end_date)).count()
 
@@ -51,6 +57,12 @@ def case_count():
     end_date = data.get('end_date', date.today().isoformat())
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
+
+    today = datetime.today()
+    if start_date > today:
+        start_date = today
+    if end_date > today:
+        end_date = today
 
     case_count = session.query(Case)\
         .filter(Case.updated_at.between(start_date, end_date)).count()

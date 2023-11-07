@@ -118,6 +118,22 @@ function createEmployee () {
 function findPatientCount () {
   const startDate = document.getElementById('startDate').value;
   const endDate = document.getElementById('endDate').value;
+  const patientCountElement = document.getElementById('patientCount');
+  const today = new Date();
+  const todayISO = today.toISOString().split('T')[0];
+
+  if (startDate > todayISO) {
+    patientCountElement.textContent = 'Start date cannot be in future';
+    return;
+  }
+  if (endDate > todayISO) {
+    patientCountElement.textContent = 'End date cannot be in future';
+    return;
+  }
+  if (startDate > endDate) {
+    patientCountElement.textContent = 'End date must be greater than start date';
+    return;
+  }
 
   fetch('https://clinicbase.tech/api/patient_count', {
     method: 'POST',
@@ -128,13 +144,29 @@ function findPatientCount () {
   })
     .then(response => response.json())
     .then(data => {
-      document.getElementById('patientCount').textContent = `Total Patients: ${data.patient_count}`;
+      patientCountElement.textContent = `Total Patients: ${data.patient_count}`;
     });
 }
 
 function findCaseCount () {
   const startDate = document.getElementById('startDate').value;
   const endDate = document.getElementById('endDate').value;
+  const caseCountElement = document.getElementById('caseCount');
+  const today = new Date();
+  const todayISO = today.toISOString().split('T')[0];
+
+  if (startDate > todayISO) {
+    caseCountElement.textContent = 'Start date cannot be in future';
+    return;
+  }
+  if (endDate > todayISO) {
+    caseCountElement.textContent = 'End date cannot be in future';
+    return;
+  }
+  if (startDate > endDate) {
+    caseCountElement.textContent = 'End date must be greater than start date';
+    return;
+  }
 
   fetch('https://clinicbase.tech/api/case_count', {
     method: 'POST',
@@ -145,7 +177,7 @@ function findCaseCount () {
   })
     .then(response => response.json())
     .then(data => {
-      document.getElementById('caseCount').textContent = `Total Case: ${data.case_count}`;
+      caseCountElement.textContent = `Total Case: ${data.case_count}`;
     });
 }
 
@@ -160,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
         apiStatusElement.classList.remove('available');
       }
-    })
+    });
 });
 
 document.getElementById('patientCountBtn').addEventListener('click', findPatientCount);
