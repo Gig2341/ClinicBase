@@ -25,7 +25,7 @@ def search_patients():
     firstname = data.get('firstname')
     surname = data.get('surname')
 
-    base_query = Patient.query
+    base_query = session.query(Patient)
     if insurance:
         base_query = base_query\
             .filter(Patient.insurance.ilike(f'%{insurance}%'))
