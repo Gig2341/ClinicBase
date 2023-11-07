@@ -203,10 +203,13 @@ document.getElementById('searchEmployeeForm').addEventListener('submit', functio
   searchEmployee();
 });
 
-document.getElementById('updateEmployeeButton').addEventListener('click', () => {
+document.getElementById('updateEmployeeForm').addEventListener('submit', function (event) {
+  event.preventDefault();
   if (employeeId) {
     makeUpdateRequest(employeeId);
   }
+});
+
 });
 
 document.getElementById('deleteEmployeeButton').addEventListener('click', () => {
@@ -214,5 +217,7 @@ document.getElementById('deleteEmployeeButton').addEventListener('click', () => 
     makeDeleteRequest(employeeId);
   }
 });
-
-document.getElementById('createEmployeeButton').addEventListener('click', createEmployee);
+document.getElementById('createEmployeeForm').addEventListener('submit', function (event) {
+  event.preventDefault();
+    createEmployee();
+});
