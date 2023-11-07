@@ -11,7 +11,7 @@ function searchEmployee () {
     [searchFilter]: searchText
   };
 
-  fetch('https://clinicbase.tech/api/patients/search', {
+  fetch('https://clinicbase.tech/api/employees/search', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -58,6 +58,7 @@ function makeUpdateRequest (employeeId) {
   })
     .then(response => response.json())
     .then(data => {
+      document.getElementById('updateEmployeeForm').reset();
       displayMessage(data, 'Updated');
     });
 }
@@ -111,6 +112,7 @@ function createEmployee () {
       return response.json();
     })
     .then(data => {
+      document.getElementById('createEmployeeForm').reset();
       displayMessage(data, 'created');
     });
 }
