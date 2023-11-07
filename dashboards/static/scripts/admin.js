@@ -122,15 +122,12 @@ function findPatientCount () {
   const today = new Date();
   const todayISO = today.toISOString().split('T')[0];
 
-  if (startDate === '' || endDate === '') {
-    patientCountElement.textContent = 'Select a valid start or end date';
-    return;
   }
-  if (startDate > todayISO) {
-    patientCountElement.textContent = 'Start date cannot be in future';
+  if (startDate === '' || startDate > todayISO) {
+    patientCountElement.textContent = 'Start date is invalid';
     return;
-  if (endDate > todayISO) {
-    patientCountElement.textContent = 'End date cannot be in future';
+  if (endDate === '' || endDate > todayISO) {
+    patientCountElement.textContent = 'End date is invalid';
     return;
   }
   if (startDate > endDate) {
@@ -158,16 +155,13 @@ function findCaseCount () {
   const today = new Date();
   const todayISO = today.toISOString().split('T')[0];
 
-  if (startDate === '' || endDate === '') {
-    caseCountElement.textContent = 'Select a valid start or end date';
+  }
+  if ((startDate === '' || startDate > todayISO) {
+    caseCountElement.textContent = 'Start date is invalid';
     return;
   }
-  if (startDate > todayISO) {
-    caseCountElement.textContent = 'Start date cannot be in future';
-    return;
-  }
-  if (endDate > todayISO) {
-    caseCountElement.textContent = 'End date cannot be in future';
+  if (endDate === '' || endDate > todayISO) {
+    caseCountElement.textContent = 'End date is invalid';
     return;
   }
   if (startDate > endDate) {
