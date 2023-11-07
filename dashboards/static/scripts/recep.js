@@ -1,4 +1,5 @@
 let patientId = null;
+let fetchedPatientData = [];
 
 function searchPatient () {
   const searchText = document.getElementById('SearchText').value;
@@ -20,6 +21,8 @@ function searchPatient () {
   })
     .then(response => response.json())
     .then(data => {
+      fetchedPatientData = data;
+
       data.forEach(patient => {
         const listItem = document.createElement('li');
         const radio = document.createElement('input');
@@ -71,7 +74,7 @@ function makeDeleteRequest (patientId) {
   })
     .then(response => response.json())
     .then(data => {
-      displayPatientInfodata, 'Deleted');
+      displayPatientInfo(data, 'Deleted');
     });
 }
 
@@ -82,7 +85,7 @@ function makeSendToDoctorRequest (patientId) {
       return response.json();
     })
     .then(data => {
-      displayPatientInfo(data, scheduled);
+      displayPatientInfo(data, 'Scheduled');
     })
 }
 
@@ -91,7 +94,7 @@ function handleSelection () {
 
   if (selectedRadio) {
     patientId = selectedRadio.value;
-const selectedPatient = data.find(patient => patient.id === patientId);
+    const selectedPatient = fetchedPatientData.find(patient => patient.id === patientId);
 
     if (selectedPatient) {
     displayPatientInfo(selectedPatient);
@@ -217,6 +220,7 @@ document.getElementById('deletePatientButton').addEventListener('click', () => {
   if (patientId) {
     makeDeleteRequest(patientId);
   }
+});
 
 document.getElementById('createPatientForm').addEventListener('submit', function (event) {
   event.preventDefault();
