@@ -100,7 +100,7 @@ function createEmployee () {
     jsonObject[key] = value;
   });
 
-  fetch('https://clinicbase.tech/api/employees', {
+  fetch('https://clinicbase.tech/api/employee', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -219,5 +219,5 @@ document.getElementById('deleteEmployeeButton').addEventListener('click', () => 
 });
 document.getElementById('createEmployeeForm').addEventListener('submit', function (event) {
   event.preventDefault();
-    createEmployee();
+  createEmployee();
 });
