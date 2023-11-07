@@ -210,13 +210,12 @@ document.getElementById('updateEmployeeForm').addEventListener('submit', functio
   }
 });
 
-});
-
 document.getElementById('deleteEmployeeButton').addEventListener('click', () => {
   if (employeeId) {
     makeDeleteRequest(employeeId);
   }
 });
+
 document.getElementById('createEmployeeForm').addEventListener('submit', function (event) {
   event.preventDefault();
   createEmployee();
