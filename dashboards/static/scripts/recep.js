@@ -2,8 +2,8 @@ let patientId = null;
 let fetchedPatientData = [];
 
 function searchPatient () {
-  const searchText = document.getElementById('SearchText').value;
-  const searchFilter = document.getElementById('SearchFilter').value;
+  const searchText = document.getElementById('searchText').value;
+  const searchFilter = document.getElementById('searchFilter').value;
   const radioList = document.getElementById('radio-button-list');
 
   radioList.innerHTML = '';
