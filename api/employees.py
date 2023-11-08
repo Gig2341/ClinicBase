@@ -69,6 +69,7 @@ def put_employee(employee_id):
     if not request.get_json():
         abort(400, description="Not a JSON")
 
+    data = request.get_json()    
     ignore = ['id', 'name', 'created_at', 'updated']
 
     if 'password' in data:
@@ -76,7 +77,7 @@ def put_employee(employee_id):
         hashed_password = bcrypt.generate_password_hash(password)\
             .decode('utf-8')
 
-    for key, value in request.get_json().items():
+    for key, value in data.items():
         if key not in ignore:
             setattr(employee, key, value)
     storage.save()
