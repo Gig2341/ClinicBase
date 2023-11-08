@@ -76,6 +76,7 @@ def put_employee(employee_id):
         password = data['password']
         hashed_password = bcrypt.generate_password_hash(password)\
             .decode('utf-8')
+        data['password'] = hashed_password
 
     for key, value in data.items():
         if key not in ignore:
