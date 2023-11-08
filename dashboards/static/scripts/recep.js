@@ -43,7 +43,6 @@ function searchPatient () {
 }
 
 function makeUpdateRequest (patientId) {
-
   const formData = new FormData(document.getElementById('updatePatientForm'));
 
   const jsonObject = {};
@@ -80,7 +79,6 @@ function makeDeleteRequest (patientId) {
 }
 
 function makeSendToDoctorRequest (patientId) {
-
   clearRadioList();
   fetch(`https://clinicbase.tech/get_patient/${patientId}`)
     .then(response => {
@@ -105,7 +103,6 @@ function handleSelection () {
 }
 
 function displayPatientInfo (data, estatus) {
-
   const patientInfoElement = document.getElementById('responseContainer');
   let statusHTML = '';
 
