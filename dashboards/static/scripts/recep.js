@@ -43,6 +43,7 @@ function searchPatient () {
 }
 
 function makeUpdateRequest (patientId) {
+
   const formData = new FormData(document.getElementById('updatePatientForm'));
 
   const jsonObject = {};
@@ -79,6 +80,8 @@ function makeDeleteRequest (patientId) {
 }
 
 function makeSendToDoctorRequest (patientId) {
+
+  clearRadioList();
   fetch(`https://clinicbase.tech/get_patient/${patientId}`)
     .then(response => {
       return response.json();
@@ -101,20 +104,14 @@ function handleSelection () {
   }
 }
 
-function displayPatientInfo (data, status) {
+function displayPatientInfo (data, estatus) {
+
   const patientInfoElement = document.getElementById('responseContainer');
-  let statusMessage = '';
+  let statusHTML = '';
 
-  if (status === 'created') {
-    statusMessage = `Patient with the information below has been successfully ${status}`;
-  } else if (status === 'updated') {
-    statusMessage = `Patient with the information below has been successfully ${status}`;
-  } else if (status === 'deleted') {
-    statusMessage = `Patient with the information below has been successfully ${status}`;
+  if (estatus) {
+    statusHTML = `<h4>Status:</h4><p>Patient with the information below has been successfully ${estatus}</p>`;
   }
-
-  const statusHTML = statusMessage ? `<h4>Status:</h4><p>${statusMessage}</p>` : '';
-
   patientInfoElement.innerHTML = `${statusHTML}<h4>Patient Information:</h4>
     <div>
         <p>First Name: ${data.firstname}</p>
