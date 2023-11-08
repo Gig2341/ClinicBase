@@ -37,7 +37,7 @@
     <div class="container">
         <div class="employee-bar">
             <div>
-                <h4>{{current_user.name}}</h4>
+                <h4>Receptionist Name: {{ current_user.name }}</h4>
             </div>
         </div>
         <main>
@@ -87,7 +87,7 @@
                     <div class="nav-content">
                         <div id="Add New Patient" class="tabcontent">
                             <h3>Add New Patient</h3>
-                            <form action="">
+                            <form id=createPatientForm">
                                 <label for="fname">First name:</label>
                                 <input type="text" id="fname" name="firstname" required><br><br>
                                 <label for="sname">Surname:</label>
@@ -96,7 +96,7 @@
                                 <input type="text" id="DOB" name="dob" required><br><br>
                                 <label for="phone">Phone Number:</label>
                                 <input type="tel" id="phone" name="tel" required><br><br>
-                                <label for="Occu">Occupation:</label>
+                                <label for="occu">Occupation:</label>
                                 <input type="text" id="occu" name="occupation" required><br><br>
                                 <label for="insur">Insurance:</label>
                                 <input type="text" id="insur" name="insurance"><br><br>
@@ -105,7 +105,7 @@
                         </div>
                         <div id="Update Patient Info" class="tabcontent">
                             <h3>Update Patient Info</h3>
-                            <form action="">
+                            <form id="updatePatientForm">
                                 <label for="pphone">Phone Number</label>
                                 <input type="tel" id="pphone" name="tel"><br><br>
                                 <label for="pinsur">Insurance:</label>

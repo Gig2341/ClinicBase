@@ -20,6 +20,7 @@ function searchEmployee () {
   })
     .then(response => response.json())
     .then(data => {
+      document.getElementById('searchEmployeeForm').reset();
       data.forEach(employee => {
         const listItem = document.createElement('li');
         const radio = document.createElement('input');
@@ -201,7 +202,8 @@ document.getElementById('patientCountBtn').addEventListener('click', findPatient
 
 document.getElementById('caseCountBtn').addEventListener('click', findCaseCount);
 
-document.getElementById('searchEmployeeForm').addEventListener('submit', function () {
+document.getElementById('searchEmployeeForm').addEventListener('submit', function (event) {
+  event.preventDefault();
   searchEmployee();
 });
 

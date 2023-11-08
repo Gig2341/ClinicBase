@@ -21,6 +21,7 @@ function searchPatient () {
   })
     .then(response => response.json())
     .then(data => {
+      document.getElementById('searchPatientForm').reset();
       fetchedPatientData = data;
 
       data.forEach(patient => {
@@ -192,7 +193,8 @@ function displayCompletedCases (data) {
 
 document.getElementById('patientPrescriptionButton').addEventListener('click', getCompletedCases);
 
-document.getElementById('searchPatientForm').addEventListener('submit', function () {
+document.getElementById('searchPatientForm').addEventListener('submit', function (event) {
+  event.preventDefault();
   searchPatient();
 });
 

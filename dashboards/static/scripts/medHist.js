@@ -34,6 +34,7 @@ function medHistoryAPICalls () {
     })
       .then(response => response.json())
       .then(data => {
+        document.getElementById('searchPatientForm').reset();
         data.forEach(patient => {
           const listItem = document.createElement('li');
           const radio = document.createElement('input');
@@ -89,7 +90,8 @@ function medHistoryAPICalls () {
     });
   }
 
-  document.getElementById('searchPatientForm').addEventListener('submit', function () {
+  document.getElementById('searchPatientForm').addEventListener('submit', function (event) {
+    event.preventDefault();
     handleSearchButtonClick();
   });
   document.getElementById('patientRecordButton').addEventListener('click', () => {
