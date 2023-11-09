@@ -12,7 +12,7 @@ class Patient(BaseModel, Base):
     firstname = Column(String(60), nullable=False)
     surname = Column(String(60), nullable=False)
     dob = Column(Date, nullable=False)
-    tel = Column(Integer, nullable=False)
+    tel = Column(String(20), nullable=False)
     occupation = Column(String(128))
     insurance = Column(String(128))
     cases = relationship("Case", backref="patient", cascade="delete")
