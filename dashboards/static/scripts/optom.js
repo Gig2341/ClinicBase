@@ -114,6 +114,7 @@ function initializeSaveHandler () {
         })
         .then(data => {
           displayPatientInfo(data, 'saved');
+          clearFormValues();
         });
     }
   });
@@ -141,7 +142,7 @@ function initializeSubmitHandler () {
       collectAndAddFormDataSection('tests', document.getElementById('Tests'));
       collectAndAddFormDataSection('lenses', document.getElementById('Lens Prescription'));
 
-      fetch(`https://clinicbase.tech/api/cases/save/${caseId}`, {
+      fetch(`https://clinicbase.tech/api/cases/submit/${caseId}`, {
         method: 'POST',
         body: JSON.stringify(allFormInfo),
         headers: {
@@ -152,25 +153,24 @@ function initializeSubmitHandler () {
           return response.json();
         })
         .then(data => {
-          displayPatientInfo(data, 'submited');
-          clearFormValues(['History', 'Examination', 'Diagnosis', 'Medication', 'Tests', 'Lens Prescription']);
+          displayPatientInfo(data, 'submitted');
+          clearFormValues();
         });
     }
   });
 }
 
-function collectFormData (formId) {
-  const form = document.getElementById(formId);
-  const formData = new FormData(form);
-  const formInfo = {};
-  formData.forEach((value, key) => {
-    formInfo[key] = value;
+function collectFormData (form) {
+  const formData = {};
+  const inputs = form.querySelectorAll('textarea');
+  inputs.forEach(input => {
+    formData[input.name] = input.value;
   });
-  return formInfo;
+  return formData;
 }
 
-function clearFormValues (formIds) {
-  formIds.forEach(formId => document.getElementById(formId).reset());
+function clearFormValues () {
+  document.getElementById('medicalForm').reset();
 }
 
 function displayPatientInfo (data, estatus) {
