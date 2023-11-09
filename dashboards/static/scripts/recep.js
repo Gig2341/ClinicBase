@@ -43,7 +43,7 @@ function searchPatient () {
     });
 }
 
-function makeUpdateRequest (patientId) {
+function makeUpdateRequest (Id) {
   const formData = new FormData(document.getElementById('updatePatientForm'));
 
   const jsonObject = {};
@@ -53,7 +53,7 @@ function makeUpdateRequest (patientId) {
 
   clearRadioList();
 
-  fetch(`https://clinicbase.tech/api/patients/${patientId}`, {
+  fetch(`https://clinicbase.tech/api/patients/${Id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -67,10 +67,10 @@ function makeUpdateRequest (patientId) {
     });
 }
 
-function makeDeleteRequest (patientId) {
+function makeDeleteRequest (Id) {
   clearRadioList();
 
-  fetch(`https://clinicbase.tech/api/patients/${patientId}`, {
+  fetch(`https://clinicbase.tech/api/patients/${Id}`, {
     method: 'DELETE'
   })
     .then(response => response.json())
@@ -79,9 +79,9 @@ function makeDeleteRequest (patientId) {
     });
 }
 
-function makeSendToDoctorRequest (patientId) {
+function makeSendToDoctorRequest (Id) {
   clearRadioList();
-  fetch(`https://clinicbase.tech/get_patient/${patientId}`)
+  fetch(`https://clinicbase.tech/get_patient/${Id}`)
     .then(response => {
       return response.json();
     })

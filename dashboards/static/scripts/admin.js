@@ -40,7 +40,7 @@ function searchEmployee () {
     });
 }
 
-function makeUpdateRequest (employeeId) {
+function makeUpdateRequest (Id) {
   const formData = new FormData(document.getElementById('updateEmployeeForm'));
 
   const jsonObject = {};
@@ -50,7 +50,7 @@ function makeUpdateRequest (employeeId) {
 
   clearRadioList();
 
-  fetch(`https://clinicbase.tech/api/employees/${employeeId}`, {
+  fetch(`https://clinicbase.tech/api/employees/${Id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -64,10 +64,10 @@ function makeUpdateRequest (employeeId) {
     });
 }
 
-function makeDeleteRequest (employeeId) {
+function makeDeleteRequest (Id) {
   clearRadioList();
 
-  fetch(`https://clinicbase.tech/api/employees/${employeeId}`, {
+  fetch(`https://clinicbase.tech/api/employees/${Id}`, {
     method: 'DELETE'
   })
     .then(response => response.json())
