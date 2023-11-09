@@ -46,6 +46,16 @@ function handleSelection () {
   }
 }
 
+function getMedicalRecords (patientId) {
+  if (patientId) {
+    fetch(`https://clinicbase.tech/api/medical_records/${patientId}`)
+      .then(response => response.json())
+      .then(data => {
+        generateAndPreviewHtml(data);
+      });
+  }
+}
+
 function createNewCase (patientId) {
   if (patientId) {
     const optomId = document.getElementById('optom-info').getAttribute('data-optom-info');
@@ -71,7 +81,7 @@ function createNewCase (patientId) {
 }
 
 function initializeSaveHandler () {
-  const saveButton = document.getElementById('save');
+  const saveButton = document.getElementById('saveCaseButton');
   saveButton.addEventListener('click', function () {
     if (caseId) {
       const allFormInfo = {};
@@ -110,9 +120,9 @@ function initializeSaveHandler () {
 }
 
 function initializeSubmitHandler () {
-  const submitButton = document.getElementById('submit');
+  const submitButton = document.getElementById('submitCaseButton');
   submitButton.addEventListener('click', function () {
-    if (selectedCommentId) {
+    if (caseId) {
       const allFormInfo = {};
 
       function collectAndAddFormDataSection (sectionName, form) {
@@ -131,9 +141,7 @@ function initializeSubmitHandler () {
       collectAndAddFormDataSection('tests', document.getElementById('Tests'));
       collectAndAddFormDataSection('lenses', document.getElementById('Lens Prescription'));
 
-      const apiUrl = `127.0.0.1:5000/api/cases/submit/${selectedCommentId}`;
-
-      fetch(apiUrl, {
+      fetch(`https://clinicbase.tech/api/cases/save/${caseId}`, {
         method: 'POST',
         body: JSON.stringify(allFormInfo),
         headers: {
@@ -144,6 +152,7 @@ function initializeSubmitHandler () {
           return response.json();
         })
         .then(data => {
+          displayPatientInfo(data, 'submited');
           clearFormValues(['History', 'Examination', 'Diagnosis', 'Medication', 'Tests', 'Lens Prescription']);
         });
     }
@@ -163,6 +172,7 @@ function collectFormData (formId) {
 function clearFormValues (formIds) {
   formIds.forEach(formId => document.getElementById(formId).reset());
 }
+
 function displayPatientInfo (data, estatus) {
   const patientInfoElement = document.getElementById('responseContainer');
   let statusHTML = '';
@@ -184,3 +194,82 @@ function displayPatientInfo (data, estatus) {
         <p>Insurance: ${data.insurance}</p>
     </div>`;
 }
+
+function generateAndPreviewHtml (responseData) {
+  const container = document.getElementById('medicalRecordsContainer');
+
+  function generateHtmlContent (data) {
+    for (const sectionName in data) {
+      if (Object.prototype.hasOwnProperty.call(data, sectionName)) {
+        const sectionData = data[sectionName];
+
+        const sectionContainer = document.createElement('div');
+        sectionContainer.className = 'patient-info';
+
+        const sectionHeading = document.createElement('h5');
+        sectionHeading.textContent = sectionName;
+
+        sectionContainer.appendChild(sectionHeading);
+
+        for (const fieldName in sectionData) {
+          if (Object.prototype.hasOwnProperty.call(sectionData, fieldName)) {
+            const fieldValue = sectionData[fieldName];
+
+            const label = document.createElement('label');
+            label.textContent = fieldName;
+
+            const fieldDisplay = document.createElement('p');
+            fieldDisplay.textContent = fieldValue;
+
+            sectionContainer.appendChild(label);
+            sectionContainer.appendChild(fieldDisplay);
+          }
+        }
+
+        container.appendChild(sectionContainer);
+      }
+    }
+  }
+
+  const previewButton = document.createElement('button');
+  previewButton.textContent = 'Preview Content';
+  previewButton.addEventListener('click', function () {
+    const previewContent = {};
+    for (const sectionName in responseData) {
+      if (Object.prototype.hasOwnProperty.call(responseData, sectionName)) {
+        previewContent[sectionName] = { ...responseData[sectionName] };
+      }
+    }
+    generateHtmlContent(previewContent);
+  });
+
+  const printButton = document.createElement('button');
+  printButton.textContent = 'Print Content';
+  printButton.addEventListener('click', function () {
+    generateHtmlContent(responseData);
+    window.print();
+  });
+
+  container.appendChild(previewButton);
+  container.appendChild(printButton);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const apiStatusElement = document.getElementById('api_status');
+
+  fetch('https://clinicbase.tech/api/status')
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'OK') {
+        apiStatusElement.classList.add('available');
+      } else {
+        apiStatusElement.classList.remove('available');
+      }
+    });
+});
+
+document.getElementById('refreshButton').addEventListener('click', getPatientQueue);
+document.getElementById('patientRecordButton').addEventListener('click', getMedicalRecords);
+document.getElementById('newCaseButton').addEventListener('click', createNewCase);
+initializeSaveHandler();
+initializeSubmitHandler();
