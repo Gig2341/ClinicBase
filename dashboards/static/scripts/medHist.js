@@ -12,7 +12,7 @@ function medHistoryAPICalls () {
     fetch(`https://clinicbase.tech/api/medical_records/${patientId}`)
       .then(response => response.json())
       .then(data => {
-        displayMedicalRecords(data);
+        generateAndPreviewHtml(data);
         radioList.innerHTML = '';
       });
   };
@@ -53,43 +53,6 @@ function medHistoryAPICalls () {
       });
   };
 
-  function displayMedicalRecords (data) {
-    const medicalRecordsElement = document.getElementById('medicalRecordsContainer');
-    medicalRecordsElement.innerHTML = '<h3>Medical Records:</h3>';
-
-    data.forEach(record => {
-      medicalRecordsElement.innerHTML += `<p>Case ID: ${record.id}</p>
-                                       <p>Date Created: ${record.created_at}</p>
-                                       <p>Prescription: ${record.prescription}</p>
-                                       <h4>History:</h4>
-                                       <p>POHx: ${record.p_ocular_hx}</p>
-                                       <p>PMHx: ${record.p_medical_hx}</p>
-                                       <p>FOHx: ${record.f_ocular_hx}</p>
-                                       <p>FMHx: ${record.f_medical_hx}</p>
-                                       <h4>Examination:</h4>
-                                       <p>Visual Acuity: ${record.visual_acuity}</p>
-                                       <p>Ocular Examination: ${record.ocular_exam}</p>
-                                       <p>Chief Complaint: ${record.chief_complaint}</p>
-                                       <p>On Direct Questions: ${record.on_direct_questions}</p>
-                                       <p>Intraocular Pressure (IOP): ${record.iop}</p>
-                                       <p>Blood Pressure: ${record.blood_pressure}</p>
-                                       <p>Blood Sugar: ${record.blood_sugar}</p>
-                                       <h4>Tests:</h4>
-                                       <p>Retinoscopy: ${record.retinoscopy}</p>
-                                       <p>Autorefraction: ${record.autorefraction}</p>
-                                       <p>Subjective Refraction: ${record.subj_refraction}</p>
-                                       <p>Other Tests: ${record.other_test}</p>
-                                       <h4>Diagnosis:</h4>
-                                       <p>Principal Diagnosis: ${record.principal_diagnosis}</p>
-                                       <p>Other Diagnosis 1: ${record.other_diagnosis_1}</p>
-                                       <p>Other Diagnosis 2: ${record.other_diagnosis_2}</p>
-                                       <h4>Medication:</h4>
-                                       <p>Prescribed Medication: ${record.drug}</p>
-                                       <h4>Lens Prescription:</h4>
-                                       <p>Lens Prescription: ${record.lens_rx}</p>`;
-    });
-  }
-
   document.getElementById('searchPatientForm').addEventListener('submit', function (event) {
     event.preventDefault();
     handleSearchButtonClick();
@@ -99,6 +62,65 @@ function medHistoryAPICalls () {
       getMedicalRecords(patientId);
     }
   });
+}
+
+function generateAndPreviewHtml (responseData) {
+  const container = document.getElementById('medicalRecordsContainer');
+
+  function generateHtmlContent (data) {
+    for (const sectionName in data) {
+      if (Object.prototype.hasOwnProperty.call(data, sectionName)) {
+        const sectionData = data[sectionName];
+
+        const sectionContainer = document.createElement('div');
+        sectionContainer.className = 'patient-info';
+
+        const sectionHeading = document.createElement('h5');
+        sectionHeading.textContent = sectionName;
+
+        sectionContainer.appendChild(sectionHeading);
+
+        for (const fieldName in sectionData) {
+          if (Object.prototype.hasOwnProperty.call(sectionData, fieldName)) {
+            const fieldValue = sectionData[fieldName];
+
+            const label = document.createElement('label');
+            label.textContent = fieldName;
+
+            const fieldDisplay = document.createElement('p');
+            fieldDisplay.textContent = fieldValue;
+
+            sectionContainer.appendChild(label);
+            sectionContainer.appendChild(fieldDisplay);
+          }
+        }
+
+        container.appendChild(sectionContainer);
+      }
+    }
+  }
+
+  const previewButton = document.createElement('button');
+  previewButton.textContent = 'Preview Content';
+  previewButton.addEventListener('click', function () {
+    const previewContent = {};
+    for (const sectionName in responseData) {
+      if (Object.prototype.hasOwnProperty.call(responseData, sectionName)) {
+        previewContent[sectionName] = { ...responseData[sectionName] };
+      }
+    }
+    generateHtmlContent(previewContent);
+  });
+
+  const printButton = document.createElement('button');
+  printButton.textContent = 'Print Content';
+  printButton.addEventListener('click', function () {
+    generateHtmlContent(responseData);
+    window.print();
+  });
+
+  container.appendChild(previewButton);
+  container.appendChild(printButton);
 }
 
 medHistoryAPICalls();
