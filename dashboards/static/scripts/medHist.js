@@ -34,6 +34,8 @@ function medHistoryAPICalls () {
     })
       .then(response => response.json())
       .then(data => {
+        radioList.innerHTML = '';
+
         document.getElementById('searchPatientForm').reset();
         data.forEach(patient => {
           const listItem = document.createElement('li');
@@ -71,28 +73,22 @@ function generateAndPreviewHtml (responseData) {
     for (const sectionName in data) {
       if (Object.prototype.hasOwnProperty.call(data, sectionName)) {
         const sectionData = data[sectionName];
-
         const sectionContainer = document.createElement('div');
         sectionContainer.className = 'patient-info';
 
         const sectionHeading = document.createElement('h5');
         sectionHeading.textContent = sectionName;
-
         sectionContainer.appendChild(sectionHeading);
 
-        for (const fieldName in sectionData) {
-          if (Object.prototype.hasOwnProperty.call(sectionData, fieldName)) {
-            const fieldValue = sectionData[fieldName];
+        for (const [fieldName, fieldValue] of Object.entries(sectionData)) {
+          const label = document.createElement('label');
+          label.textContent = fieldName;
 
-            const label = document.createElement('label');
-            label.textContent = fieldName;
+          const fieldDisplay = document.createElement('p');
+          fieldDisplay.textContent = fieldValue;
 
-            const fieldDisplay = document.createElement('p');
-            fieldDisplay.textContent = fieldValue;
-
-            sectionContainer.appendChild(label);
-            sectionContainer.appendChild(fieldDisplay);
-          }
+          sectionContainer.appendChild(label);
+          sectionContainer.appendChild(fieldDisplay);
         }
 
         container.appendChild(sectionContainer);
@@ -100,27 +96,7 @@ function generateAndPreviewHtml (responseData) {
     }
   }
 
-  const previewButton = document.createElement('button');
-  previewButton.textContent = 'Preview Content';
-  previewButton.addEventListener('click', function () {
-    const previewContent = {};
-    for (const sectionName in responseData) {
-      if (Object.prototype.hasOwnProperty.call(responseData, sectionName)) {
-        previewContent[sectionName] = { ...responseData[sectionName] };
-      }
-    }
-    generateHtmlContent(previewContent);
-  });
-
-  const printButton = document.createElement('button');
-  printButton.textContent = 'Print Content';
-  printButton.addEventListener('click', function () {
-    generateHtmlContent(responseData);
-    window.print();
-  });
-
-  container.appendChild(previewButton);
-  container.appendChild(printButton);
+  generateHtmlContent(responseData);
 }
 
 medHistoryAPICalls();

@@ -88,23 +88,12 @@ def patient_queue():
     return jsonify(patients_data)
 
 
-@bp_api.route('/medical_records/<patient_id>', methods=['POST'],
-              strict_slashes=False)
+@bp_api.route('/medical_records/<patient_id>', strict_slashes=False)
 @cross_origin(origins=["127.0.0.1"])
 def get_patient_records(patient_id):
     """ Returns the medical records of a patient """
-    if not request.is_json:
-        abort(400, description="Not a JSON")
-
-    data = request.get_json()
-    start_date = data.get('start_date', date.min.isoformat())
-    end_date = data.get('end_date', date.today().isoformat())
-    start_date = datetime.strptime(start_date, '%Y-%m-%d')
-    end_date = datetime.strptime(end_date, '%Y-%m-%d')
-
     cases = session.query(Case).filter(
-        Case.patient_id == patient_id,
-        Case.created_at.between(start_date, end_date)
+        Case.patient_id == patient_id
     ).order_by(Case.updated_at.desc()).all()
 
     case_data = [case.to_dict() for case in cases]
