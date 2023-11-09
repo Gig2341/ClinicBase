@@ -43,51 +43,56 @@ function searchPatient () {
     });
 }
 
-function makeUpdateRequest (Id) {
-  const formData = new FormData(document.getElementById('updatePatientForm'));
+function handleUpdateRequest () {
+  if (patientId) {
+    const formData = new FormData(document.getElementById('updatePatientForm'));
 
-  const jsonObject = {};
-  formData.forEach((value, key) => {
-    jsonObject[key] = value;
-  });
-
-  clearRadioList();
-
-  fetch(`https://clinicbase.tech/api/patients/${Id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(jsonObject)
-  })
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById('updatePatientForm').reset();
-      displayPatientInfo(data, 'Updated');
+    const jsonObject = {};
+    formData.forEach((value, key) => {
+      jsonObject[key] = value;
     });
-}
 
-function makeDeleteRequest (Id) {
-  clearRadioList();
+    clearRadioList();
 
-  fetch(`https://clinicbase.tech/api/patients/${Id}`, {
-    method: 'DELETE'
-  })
-    .then(response => response.json())
-    .then(data => {
-      displayPatientInfo(data, 'Deleted');
-    });
-}
-
-function makeSendToDoctorRequest (Id) {
-  clearRadioList();
-  fetch(`https://clinicbase.tech/get_patient/${Id}`)
-    .then(response => {
-      return response.json();
+    fetch(`https://clinicbase.tech/api/patients/${patientId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(jsonObject)
     })
-    .then(data => {
-      displayPatientInfo(data, 'Scheduled');
-    });
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('updatePatientForm').reset();
+        displayPatientInfo(data, 'Updated');
+      });
+  }
+}
+
+function handleDeleteRequest () {
+  if (patientId) {
+    clearRadioList();
+
+    fetch(`https://clinicbase.tech/api/patients/${patientId}`, {
+      method: 'DELETE'
+    })
+      .then(response => response.json())
+      .then(data => {
+        displayPatientInfo(data, 'Deleted');
+      });
+  }
+}
+
+function handleSendToDoctorRequest () {
+  if (patientId) {
+    clearRadioList();
+
+    fetch(`https://clinicbase.tech/get_patient/${patientId}`)
+      .then(response => response.json())
+      .then(data => {
+        displayPatientInfo(data, 'Scheduled');
+      });
+  }
 }
 
 function handleSelection () {
@@ -198,26 +203,20 @@ document.getElementById('searchPatientForm').addEventListener('submit', function
   searchPatient();
 });
 
-document.getElementById('updatePatientForm').addEventListener('submit', function (event) {
-  event.preventDefault();
-  if (patientId) {
-    makeUpdateRequest(patientId);
-  }
-});
-
-document.getElementById('sendToDoctorButton').addEventListener('click', () => {
-  if (patientId) {
-    makeSendToDoctorRequest(patientId);
-  }
-});
-
-document.getElementById('deletePatientButton').addEventListener('click', () => {
-  if (patientId) {
-    makeDeleteRequest(patientId);
-  }
-});
-
 document.getElementById('createPatientForm').addEventListener('submit', function (event) {
   event.preventDefault();
   createPatient();
+});
+
+document.getElementById('updatePatientForm').addEventListener('submit', function (event) {
+  event.preventDefault();
+  handleUpdateRequest();
+});
+
+document.getElementById('deletePatientButton').addEventListener('click', function () {
+  handleDeleteRequest();
+});
+
+document.getElementById('sendToDoctorButton').addEventListener('click', function () {
+  handleSendToDoctorRequest();
 });

@@ -40,40 +40,44 @@ function searchEmployee () {
     });
 }
 
-function makeUpdateRequest (Id) {
-  const formData = new FormData(document.getElementById('updateEmployeeForm'));
+function handleUpdateRequest () {
+  if (employeeId) {
+    const formData = new FormData(document.getElementById('updateEmployeeForm'));
 
-  const jsonObject = {};
-  formData.forEach((value, key) => {
-    jsonObject[key] = value;
-  });
-
-  clearRadioList();
-
-  fetch(`https://clinicbase.tech/api/employees/${Id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(jsonObject)
-  })
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById('updateEmployeeForm').reset();
-      displayMessage(data, 'Updated');
+    const jsonObject = {};
+    formData.forEach((value, key) => {
+      jsonObject[key] = value;
     });
+
+    clearRadioList();
+
+    fetch(`https://clinicbase.tech/api/employees/${employeeId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(jsonObject)
+    })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('updateEmployeeForm').reset();
+        displayMessage(data, 'Updated');
+      });
+  }
 }
 
-function makeDeleteRequest (Id) {
-  clearRadioList();
+function handleDeleteRequest () {
+  if (employeeId) {
+    clearRadioList();
 
-  fetch(`https://clinicbase.tech/api/employees/${Id}`, {
-    method: 'DELETE'
-  })
-    .then(response => response.json())
-    .then(data => {
-      displayMessage(data, 'Deleted');
-    });
+    fetch(`https://clinicbase.tech/api/employees/${employeeId}`, {
+      method: 'DELETE'
+    })
+      .then(response => response.json())
+      .then(data => {
+        displayMessage(data, 'Deleted');
+      });
+  }
 }
 
 function handleSelection () {
@@ -207,20 +211,16 @@ document.getElementById('searchEmployeeForm').addEventListener('submit', functio
   searchEmployee();
 });
 
-document.getElementById('updateEmployeeForm').addEventListener('submit', function (event) {
-  event.preventDefault();
-  if (employeeId) {
-    makeUpdateRequest(employeeId);
-  }
-});
-
-document.getElementById('deleteEmployeeButton').addEventListener('click', () => {
-  if (employeeId) {
-    makeDeleteRequest(employeeId);
-  }
-});
-
 document.getElementById('createEmployeeForm').addEventListener('submit', function (event) {
   event.preventDefault();
   createEmployee();
+});
+
+document.getElementById('updateEmployeeForm').addEventListener('submit', function (event) {
+  event.preventDefault();
+  handleUpdateRequest();
+});
+
+document.getElementById('deleteEmployeeButton').addEventListener('click', function () {
+  handleDeleteRequest();
 });
