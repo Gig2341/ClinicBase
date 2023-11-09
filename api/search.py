@@ -28,15 +28,15 @@ def search_patients():
     base_query = session.query(Patient)
     if insurance:
         base_query = base_query\
-            .filter(Patient.insurance.ilike(f'%{insurance}%'))
+            .filter(Patient.insurance.ilike(insurance))
 
     if firstname:
         base_query = base_query\
-            .filter(Patient.firstname.ilike(f'%{firstname}%'))
+            .filter(Patient.firstname.ilike(firstname))
 
     if surname:
         base_query = base_query\
-            .filter(Patient.surname.ilike(f'%{surname}%'))
+            .filter(Patient.surname.ilike(surname))
 
     filtered_patients = base_query.all()
     return jsonify([patient.to_dict() for patient in filtered_patients])
@@ -58,9 +58,9 @@ def search_employees():
 
     if name:
         receptionist_results = receptionist_query\
-            .filter(Receptionist.name.ilike(f'%{name}%')).all()
+            .filter(Receptionist.name.ilike(name)).all()
         optometrist_results = optometrist_query\
-            .filter(Optometrist.name.ilike(f'%{name}%')).all()
+            .filter(Optometrist.name.ilike(name)).all()
     else:
         receptionist_results = receptionist_query.all()
         optometrist_results = optometrist_query.all()
