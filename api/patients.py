@@ -67,7 +67,7 @@ def delete_patient(patient_id):
     patient = storage.get(Patient, patient_id)
     if not patient:
         abort(404)
-    if hasattr(patient, 'cases'):
+    if patient.cases:
         abort(400, description="Patient has a case")
     patient.delete()
     storage.save()

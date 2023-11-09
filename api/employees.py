@@ -95,7 +95,7 @@ def delete_employee(employee_id):
         employee = storage.get(Optometrist, employee_id)
     if not employee:
         abort(404)
-    if isinstance(employee, Optometrist) and hasattr(employee, 'cases'):
+    if isinstance(employee, Optometrist) and employee.cases:
         abort(400, description="Optom has a case")
     employee.delete()
     storage.save()
