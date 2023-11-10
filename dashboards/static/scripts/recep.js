@@ -38,7 +38,18 @@ function searchPatient () {
         listItem.appendChild(label);
         radioList.appendChild(listItem);
       });
-      radioList.addEventListener('change', (event) => handleSelection(event));
+      const radioButtons = document.querySelectorAll('input[name="employee"]');
+      radioButtons.forEach(radio => {
+        radio.addEventListener('change', function () {
+          patientId = this.value;
+          const selectedPatient = fetchedPatientData.find(patient => patient.id === patientId);
+
+          if (selectedPatient) {
+            displayPatientInfo(selectedPatient);
+          }
+          console.log('Selected patientId:', patientId);
+        });
+      });
     });
 }
 
@@ -91,19 +102,6 @@ function handleSendToDoctorRequest () {
       .then(data => {
         displayPatientInfo(data, 'Scheduled');
       });
-  }
-}
-
-function handleSelection (event) {
-  const selectedRadio = event.target;
-
-  if (selectedRadio && selectedRadio.type === 'radio') {
-    patientId = selectedRadio.value;
-    const selectedPatient = fetchedPatientData.find(patient => patient.id === patientId);
-
-    if (selectedPatient) {
-      displayPatientInfo(selectedPatient);
-    }
   }
 }
 

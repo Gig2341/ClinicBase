@@ -11,14 +11,6 @@ function getMedicalRecords () {
   }
 }
 
-function handleSelection (event) {
-  const selectedRadio = event.target;
-
-  if (selectedRadio && selectedRadio.type === 'radio') {
-    patientId = selectedRadio.value;
-  }
-}
-
 function handleSearchButtonClick () {
   const searchText = document.getElementById('searchText').value;
   const searchFilter = document.getElementById('searchFilter').value;
@@ -54,7 +46,13 @@ function handleSearchButtonClick () {
         listItem.appendChild(label);
         radioList.appendChild(listItem);
       });
-      radioList.addEventListener('change', (event) => handleSelection(event));
+      const radioButtons = document.querySelectorAll('input[name="employee"]');
+      radioButtons.forEach(radio => {
+        radio.addEventListener('change', function () {
+          patientId = this.value;
+          console.log('Selected patientId:', patientId);
+        });
+      });
     });
 }
 

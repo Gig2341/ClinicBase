@@ -37,7 +37,8 @@ function searchEmployee () {
       });
       const radioButtons = document.querySelectorAll('input[name="employee"]');
       radioButtons.forEach(radio => {
-        radio.addEventListener('change', function() {
+        radio.addEventListener('change', function () {
+          employeeId = this.value;
           console.log('Selected employeeId:', this.value);
         });
       });
