@@ -3,7 +3,7 @@
 
 from dashboards import bcrypt, login_manager
 from models import storage
-from flask import abort, url_for, redirect
+from flask import url_for
 from models.receptionist import Receptionist
 from models.optometrist import Optometrist
 from models.custom_user import Admin
@@ -22,21 +22,6 @@ def custom_authentication(user_email, user_pass):
         if user and bcrypt.check_password_hash(user.password, user_pass):
             return user
     return None
-
-
-def redirect_dashboard(user):
-    """ Redirects to the appropriate dashboard based on user type """
-    user_type_mapping = {
-        Receptionist: 'recep.dashboard_recep',
-        Optometrist: 'optom.dashboard_optom',
-        Admin: 'admin.dashboard_admin',
-    }
-
-    destination = user_type_mapping.get(type(user))
-    if destination:
-        return redirect(url_for(destination))
-    else:
-        abort(500)
 
 
 @login_manager.user_loader
