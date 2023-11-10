@@ -11,9 +11,10 @@ function getMedicalRecords () {
   }
 }
 
-function handleSelection () {
-  const selectedRadio = document.querySelector('input[name="patient"]:checked');
-  if (selectedRadio) {
+function handleSelection (event) {
+  const selectedRadio = event.target;
+
+  if (selectedRadio && selectedRadio.type === 'radio') {
     patientId = selectedRadio.value;
   }
 }
@@ -53,8 +54,7 @@ function handleSearchButtonClick () {
         listItem.appendChild(label);
         radioList.appendChild(listItem);
       });
-
-      radioList.addEventListener('click', handleSelection);
+      radioList.addEventListener('change', (event) => handleSelection(event));
     });
 }
 

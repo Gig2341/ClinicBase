@@ -35,8 +35,7 @@ function searchEmployee () {
         listItem.appendChild(label);
         radioList.appendChild(listItem);
       });
-
-      radioList.addEventListener('click', handleSelection);
+      radioList.addEventListener('change', (event) => handleSelection(event));
     });
 }
 
@@ -80,10 +79,10 @@ function handleDeleteRequest () {
   }
 }
 
-function handleSelection () {
-  const selectedRadio = document.querySelector('input[name="employee"]:checked');
+function handleSelection (event) {
+  const selectedRadio = event.target;
 
-  if (selectedRadio) {
+  if (selectedRadio && selectedRadio.type === 'radio') {
     employeeId = selectedRadio.value;
   }
 }
