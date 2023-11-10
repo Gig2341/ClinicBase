@@ -35,7 +35,12 @@ function searchEmployee () {
         listItem.appendChild(label);
         radioList.appendChild(listItem);
       });
-      radioList.addEventListener('change', (event) => handleSelection(event));
+      const radioButtons = document.querySelectorAll('input[name="employee"]');
+      radioButtons.forEach(radio => {
+        radio.addEventListener('change', function() {
+          console.log('Selected employeeId:', this.value);
+        });
+      });
     });
 }
 
@@ -76,14 +81,6 @@ function handleDeleteRequest () {
       .then(data => {
         displayMessage(data, 'Deleted');
       });
-  }
-}
-
-function handleSelection (event) {
-  const selectedRadio = event.target;
-
-  if (selectedRadio && selectedRadio.type === 'radio') {
-    employeeId = selectedRadio.value;
   }
 }
 
