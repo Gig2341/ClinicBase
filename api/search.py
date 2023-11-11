@@ -2,7 +2,7 @@
 """ API search routes """
 
 from api import bp_api
-from flask import abort, jsonify, request
+from flask import abort, jsonify, request, make_response
 from flask_login import login_required
 from models.optometrist import Optometrist
 from models.receptionist import Receptionist
@@ -39,7 +39,12 @@ def search_patients():
             .filter(Patient.surname.ilike(surname))
 
     filtered_patients = base_query.all()
-    return jsonify([patient.to_dict() for patient in filtered_patients])
+    response = make_response(jsonify([patient.to_dict()
+                             for patient in filtered_patients]))
+    response.headers['Cache-Control'] = (
+        'no-store, no-cache, must-revalidate, max-age=0, private'
+    )
+    return response
 
 
 @bp_api.route('/employees/search', methods=['POST'], strict_slashes=False)
@@ -84,4 +89,8 @@ def search_employees():
     for optometrist in optometrist_results:
         result_dicts.append(optometrist.to_dict())
 
-    return jsonify(result_dicts)
+    response = make_response(jsonify(result_dicts))
+    response.headers['Cache-Control'] = (
+        'no-store, no-cache, must-revalidate, max-age=0, private'
+    )
+    return response

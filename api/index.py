@@ -3,7 +3,8 @@
 
 from api import bp_api
 from flask_login import login_required
-from flask import abort, jsonify, request
+from flask import abort, jsonify, request, make_response
+import uuid
 from datetime import date, datetime
 from models.case import Case
 from models.patient import Patient
@@ -42,7 +43,9 @@ def patient_count():
     patient_count = session.query(Patient)\
         .filter(Patient.updated_at.between(start_date, end_date)).count()
 
-    return jsonify({'patient_count': patient_count})
+    response = make_response(jsonify({'patient_count': patient_count}))
+    response.headers['ETag'] = str(uuid.uuid4())
+    return response
 
 
 @bp_api.route('/case_count', methods=['POST'], strict_slashes=False)
@@ -67,4 +70,6 @@ def case_count():
     case_count = session.query(Case)\
         .filter(Case.updated_at.between(start_date, end_date)).count()
 
-    return jsonify({'case_count': case_count})
+    response = make_response(jsonify({'case_count': case_count}))
+    response.headers['ETag'] = str(uuid.uuid4())
+    return response

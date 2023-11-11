@@ -2,12 +2,13 @@
 """ API cases routes """
 
 from api import bp_api
-from flask import abort, jsonify, request
+from flask import abort, jsonify, request, make_response
 from datetime import date, datetime
 from models.case import Case
 from models.patient import Patient
 from flask_login import current_user, login_required
 from operator import attrgetter
+import uuid
 from sqlalchemy import func, select
 from models import storage
 from models.engine.db_storage import DBStorage
@@ -66,8 +67,10 @@ def get_completed_cases():
                 matching_cases.append(case)
 
     matching_cases.sort(key=attrgetter("updated_at"), reverse=True)
-    recent_cases = matching_cases[:5]
-    return jsonify([case.to_dict() for case in recent_cases])
+    recent_case = matching_cases[:5]
+    response = make_response(jsonify([case.to_dict() for case in recent_case]))
+    response.headers['ETag'] = str(uuid.uuid4())
+    return response
 
 
 @bp_api.route('/cases/queue', methods=['GET'], strict_slashes=False)
@@ -81,7 +84,9 @@ def patient_queue():
         .filter(Patient.updated_at == func.current_date())\
         .filter(Patient.id.in_(subquery_select)).all()
     patients_data = [patient.to_dict() for patient in patients]
-    return jsonify(patients_data)
+    response = make_response(jsonify(patients_data))
+    response.headers['ETag'] = str(uuid.uuid4())
+    return response
 
 
 @bp_api.route('/medical_records/<patient_id>', strict_slashes=False)
@@ -96,7 +101,9 @@ def get_patient_records(patient_id):
     for case in case_data:
         case.pop("patient_id", None)
 
-    return jsonify(case_data)
+    response = make_response(jsonify(case_data))
+    response.headers['ETag'] = str(uuid.uuid4())
+    return response
 
 
 @bp_api.route('/cases/save/<case_id>', methods=['POST'], strict_slashes=False)
