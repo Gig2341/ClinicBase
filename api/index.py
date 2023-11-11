@@ -3,7 +3,6 @@
 
 from api import bp_api
 from flask import abort, jsonify, request
-from flask_cors import cross_origin
 from datetime import date, datetime
 from models.case import Case
 from models.patient import Patient
@@ -14,14 +13,12 @@ session = storage.reload()
 
 
 @bp_api.route('/status', methods=['GET'], strict_slashes=False)
-@cross_origin(origins=["127.0.0.1"])
 def status():
     """ Status of API """
     return jsonify({"status": "OK"})
 
 
 @bp_api.route('/patient_count', methods=['POST'], strict_slashes=False)
-@cross_origin(origins=["127.0.0.1"])
 def patient_count():
     """ Returns the number of patients within a specified time """
     if not request.get_json():
@@ -46,7 +43,6 @@ def patient_count():
 
 
 @bp_api.route('/case_count', methods=['POST'], strict_slashes=False)
-@cross_origin(origins=["127.0.0.1"])
 def case_count():
     """ Returns the number of cases within a specified time """
     if not request.get_json():

@@ -3,7 +3,6 @@
 
 from api import bp_api
 from flask import abort, jsonify, request
-from flask_cors import cross_origin
 from datetime import date, datetime
 from models.case import Case
 from models.patient import Patient
@@ -17,7 +16,6 @@ session = db_storage.reload()
 
 
 @bp_api.route('/get_case/<case_id>', strict_slashes=False)
-@cross_origin(origins=["127.0.0.1"])
 def get_case(case_id):
     """ Returns patient's case """
     case = storage.get(Case, case_id)
@@ -27,7 +25,6 @@ def get_case(case_id):
 
 
 @bp_api.route('/cases', methods=['POST'], strict_slashes=False)
-@cross_origin(origins=["127.0.0.1"])
 def post_case():
     """ Creates a new case """
     if not request.get_json():
@@ -53,7 +50,6 @@ def post_case():
 
 
 @bp_api.route('/cases/completed', methods=['GET'], strict_slashes=False)
-@cross_origin(origins=["127.0.0.1"])
 def get_completed_cases():
     """ Gets completed cases with prescription information """
     patients = session.query(Patient)\
@@ -75,7 +71,6 @@ def get_completed_cases():
 
 
 @bp_api.route('/cases/queue', methods=['GET'], strict_slashes=False)
-@cross_origin(origins=["127.0.0.1"])
 def patient_queue():
     """ Gets patients in queue """
     subquery = session.query(Case.patient_id)\
@@ -89,7 +84,6 @@ def patient_queue():
 
 
 @bp_api.route('/medical_records/<patient_id>', strict_slashes=False)
-@cross_origin(origins=["127.0.0.1"])
 def get_patient_records(patient_id):
     """ Returns the medical records of a patient """
     cases = session.query(Case).filter(
@@ -104,7 +98,6 @@ def get_patient_records(patient_id):
 
 
 @bp_api.route('/cases/save/<case_id>', methods=['POST'], strict_slashes=False)
-@cross_origin(origins=["127.0.0.1"])
 def save_case(case_id):
     """ Saves patient's medical records into a case """
     record_type_mapping = {
@@ -150,7 +143,6 @@ def save_case(case_id):
 
 @bp_api.route('/cases/submit/<case_id>', methods=['POST'],
               strict_slashes=False)
-@cross_origin(origins=["127.0.0.1"])
 def submit_case(case_id):
     """ Submit patient's medical records into a case for closure """
     record_type_mapping = {

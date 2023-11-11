@@ -3,7 +3,6 @@
 
 from api import bp_api
 from flask import abort, jsonify, request
-from flask_cors import cross_origin
 from models.optometrist import Optometrist
 from models.receptionist import Receptionist
 from models.patient import Patient
@@ -14,7 +13,6 @@ session = db_storage.reload()
 
 
 @bp_api.route('/patients/search', methods=['POST'], strict_slashes=False)
-@cross_origin(origins=["127.0.0.1"])
 def search_patients():
     """" Handles patient search """
     if not request.get_json():
@@ -43,7 +41,6 @@ def search_patients():
 
 
 @bp_api.route('/employees/search', methods=['POST'], strict_slashes=False)
-@cross_origin(origins=["127.0.0.1"])
 def search_employees():
     """" Handles employee search """
     if not request.get_json():
