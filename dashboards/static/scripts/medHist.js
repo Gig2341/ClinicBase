@@ -50,7 +50,6 @@ function handleSearchButtonClick () {
       radioButtons.forEach(radio => {
         radio.addEventListener('change', function () {
           patientId = this.value;
-          console.log('Selected patientId:', patientId);
         });
       });
     });

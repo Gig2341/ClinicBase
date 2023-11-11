@@ -3,6 +3,7 @@
 
 from api import bp_api
 from flask import abort, jsonify, request
+from flask_login import login_required
 from models.optometrist import Optometrist
 from models.receptionist import Receptionist
 from models.patient import Patient
@@ -13,6 +14,7 @@ session = db_storage.reload()
 
 
 @bp_api.route('/patients/search', methods=['POST'], strict_slashes=False)
+@login_required
 def search_patients():
     """" Handles patient search """
     if not request.get_json():
@@ -41,6 +43,7 @@ def search_patients():
 
 
 @bp_api.route('/employees/search', methods=['POST'], strict_slashes=False)
+@login_required
 def search_employees():
     """" Handles employee search """
     if not request.get_json():

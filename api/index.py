@@ -2,6 +2,7 @@
 """ API index routes """
 
 from api import bp_api
+from flask_login import login_required
 from flask import abort, jsonify, request
 from datetime import date, datetime
 from models.case import Case
@@ -13,12 +14,14 @@ session = storage.reload()
 
 
 @bp_api.route('/status', methods=['GET'], strict_slashes=False)
+@login_required
 def status():
     """ Status of API """
     return jsonify({"status": "OK"})
 
 
 @bp_api.route('/patient_count', methods=['POST'], strict_slashes=False)
+@login_required
 def patient_count():
     """ Returns the number of patients within a specified time """
     if not request.get_json():
@@ -43,6 +46,7 @@ def patient_count():
 
 
 @bp_api.route('/case_count', methods=['POST'], strict_slashes=False)
+@login_required
 def case_count():
     """ Returns the number of cases within a specified time """
     if not request.get_json():

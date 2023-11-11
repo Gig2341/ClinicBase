@@ -47,7 +47,6 @@ function searchPatient () {
           if (selectedPatient) {
             displayPatientInfo(selectedPatient);
           }
-          console.log('Selected patientId:', patientId);
         });
       });
     });

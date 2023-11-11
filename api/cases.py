@@ -6,6 +6,7 @@ from flask import abort, jsonify, request
 from datetime import date, datetime
 from models.case import Case
 from models.patient import Patient
+from flask_login import current_user, login_required
 from operator import attrgetter
 from sqlalchemy import func, select
 from models import storage
@@ -16,6 +17,7 @@ session = db_storage.reload()
 
 
 @bp_api.route('/get_case/<case_id>', strict_slashes=False)
+@login_required
 def get_case(case_id):
     """ Returns patient's case """
     case = storage.get(Case, case_id)
@@ -24,17 +26,14 @@ def get_case(case_id):
     return jsonify(case.to_dict())
 
 
-@bp_api.route('/cases', methods=['POST'], strict_slashes=False)
-def post_case():
+@bp_api.route('/cases/<patient_id>', strict_slashes=False)
+@login_required
+def new_case(patient_id):
     """ Creates a new case """
-    if not request.get_json():
-        abort(400, description="Not a JSON")
-    if 'patient_id' not in request.get_json():
-        abort(400, description="Missing patient id")
-    if 'optometrist_id' not in request.get_json():
-        abort(400, description="Missing optometrist id")
-    data = request.get_json()
-    patient_id = data.get('patient_id')
+    data = {
+        'optometrist_id': current_user.id,
+        'patient_id': patient_id
+    }
 
     existing_case = session.query(Case).filter(
         Case.patient_id == patient_id,
@@ -50,6 +49,7 @@ def post_case():
 
 
 @bp_api.route('/cases/completed', methods=['GET'], strict_slashes=False)
+@login_required
 def get_completed_cases():
     """ Gets completed cases with prescription information """
     patients = session.query(Patient)\
@@ -71,6 +71,7 @@ def get_completed_cases():
 
 
 @bp_api.route('/cases/queue', methods=['GET'], strict_slashes=False)
+@login_required
 def patient_queue():
     """ Gets patients in queue """
     subquery = session.query(Case.patient_id)\
@@ -84,6 +85,7 @@ def patient_queue():
 
 
 @bp_api.route('/medical_records/<patient_id>', strict_slashes=False)
+@login_required
 def get_patient_records(patient_id):
     """ Returns the medical records of a patient """
     cases = session.query(Case).filter(
@@ -98,6 +100,7 @@ def get_patient_records(patient_id):
 
 
 @bp_api.route('/cases/save/<case_id>', methods=['POST'], strict_slashes=False)
+@login_required
 def save_case(case_id):
     """ Saves patient's medical records into a case """
     record_type_mapping = {
@@ -122,7 +125,7 @@ def save_case(case_id):
     if data:
         for record_type, record_data in data.items():
             if record_type in record_type_mapping:
-                record_data[case_id] = case_id
+                record_data['case_id'] = case_id
                 record_data['patient_id'] = case.patient_id
 
                 RecordClass = record_type_mapping[record_type]
@@ -143,6 +146,7 @@ def save_case(case_id):
 
 @bp_api.route('/cases/submit/<case_id>', methods=['POST'],
               strict_slashes=False)
+@login_required
 def submit_case(case_id):
     """ Submit patient's medical records into a case for closure """
     record_type_mapping = {

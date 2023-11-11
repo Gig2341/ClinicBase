@@ -37,7 +37,6 @@ function getPatientQueue () {
           if (selectedPatient) {
             displayPatientInfo(selectedPatient);
           }
-          console.log('Selected patientId:', patientId);
         });
       });
     });
@@ -55,18 +54,7 @@ function getMedicalRecords (patientId) {
 
 function createNewCase (patientId) {
   if (patientId) {
-    const optomId = document.getElementById('optom-info').getAttribute('data-optom-info');
-
-    fetch('https://clinicbase.tech/api/cases', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        optom_id: optomId,
-        patient_id: patientId
-      })
-    })
+    fetch(`https://clinicbase.tech/api/cases/${patientId}`)
       .then(response => {
         return response.json();
       })

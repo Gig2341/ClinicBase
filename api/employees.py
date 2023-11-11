@@ -2,6 +2,7 @@
 """ API eployees speficic routes """
 
 from flask import abort, jsonify, request
+from flask_login import login_required
 from dashboards import bcrypt
 from api import bp_api
 from models.optometrist import Optometrist
@@ -18,6 +19,7 @@ def get_employee_by_id(employee_id):
 
 
 @bp_api.route('/get_employee/<employee_id>', strict_slashes=False)
+@login_required
 def get_employee(employee_id):
     """ Returns employee's updated information """
     employee = get_employee_by_id(employee_id)
@@ -27,6 +29,7 @@ def get_employee(employee_id):
 
 
 @bp_api.route('/employee', methods=['POST'], strict_slashes=False)
+@login_required
 def post_employee():
     """Creates a new employee"""
     if not request.is_json:
@@ -60,6 +63,7 @@ def post_employee():
 
 @bp_api.route('/employees/<employee_id>', methods=['PUT'],
               strict_slashes=False)
+@login_required
 def put_employee(employee_id):
     """ Updates an employee's information """
     employee = get_employee_by_id(employee_id)
@@ -88,6 +92,7 @@ def put_employee(employee_id):
 
 @bp_api.route('/employees/<employee_id>', methods=['DELETE'],
               strict_slashes=False)
+@login_required
 def delete_employee(employee_id):
     """ Deletes a receptionist or an optometrist who is without a case """
     employee = get_employee_by_id(employee_id)
@@ -99,4 +104,4 @@ def delete_employee(employee_id):
 
     employee.delete()
     storage.save()
-    return jsonify({}), 200
+    return jsonify(employee.to_dict()), 200

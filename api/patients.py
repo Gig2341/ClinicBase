@@ -3,6 +3,7 @@
 
 from api import bp_api
 from flask import abort, jsonify, request
+from flask_login import login_required
 from datetime import datetime
 from models.patient import Patient
 from models import storage
@@ -15,6 +16,7 @@ def get_patient_by_id(patient_id):
 
 
 @bp_api.route('/get_patient/<patient_id>', strict_slashes=False)
+@login_required
 def get_patient(patient_id):
     """ Returns patient's updated information """
     patient = get_patient_by_id(patient_id)
@@ -26,6 +28,7 @@ def get_patient(patient_id):
 
 
 @bp_api.route('/patients', methods=['POST'], strict_slashes=False)
+@login_required
 def post_patient():
     """ Creates a new patient """
     data = request.get_json()
@@ -42,6 +45,7 @@ def post_patient():
 
 
 @bp_api.route('/patients/<patient_id>', methods=['PUT'], strict_slashes=False)
+@login_required
 def put_patient(patient_id):
     """ Updates a patient's information """
     patient = get_patient_by_id(patient_id)
@@ -62,6 +66,7 @@ def put_patient(patient_id):
 
 @bp_api.route('/patients/<patient_id>', methods=['DELETE'],
               strict_slashes=False)
+@login_required
 def delete_patient(patient_id):
     """ Deletes a patient who is without a case  """
     patient = get_patient_by_id(patient_id)
@@ -73,4 +78,4 @@ def delete_patient(patient_id):
 
     patient.delete()
     storage.save()
-    return jsonify({}), 200
+    return jsonify(patient.to_dict()), 200
