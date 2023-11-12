@@ -1,17 +1,21 @@
-#!/usr/bin/python3
-""" API cases routes """
-
 from api import bp_api
 from flask import abort, jsonify, request, make_response
-from datetime import date, datetime
-from models.case import Case
-from models.patient import Patient
 from flask_login import current_user, login_required
-from operator import attrgetter
-import uuid
-from sqlalchemy import func, select
 from models import storage
 from models.engine.db_storage import DBStorage
+from models.case import Case
+from models.patient import Patient
+from models.diagnosis import Diagnosis
+from models.examination import Examination
+from models.history import History
+from models.test import Test
+from models.lens import Lens
+from models.drug import Drug
+from datetime import datetime
+from sqlalchemy import func, select, and_
+from sqlalchemy.orm import aliased
+import uuid
+from operator import attrgetter
 
 db_storage = DBStorage()
 session = db_storage.reload()
@@ -38,7 +42,7 @@ def new_case(patient_id):
 
     existing_case = session.query(Case).filter(
         Case.patient_id == patient_id,
-        func.date(Case.created_at) == func.current_date()
+        func.date(Case.created_at) == datetime.utcnow().date()
     ).first()
 
     if not existing_case:
@@ -54,14 +58,15 @@ def new_case(patient_id):
 def get_completed_cases():
     """ Gets completed cases with prescription information """
     patients = session.query(Patient)\
-        .filter(func.date(Patient.updated_at) == func.current_date()).all()
+        .filter(func.date(Patient.updated_at) == datetime.utcnow().date())\
+        .all()
 
     matching_cases = []
 
     for patient in patients:
         for case in patient.cases:
             if (
-                func.date(case.updated_at) == func.current_date()
+                func.date(case.updated_at) == datetime.utcnow().date()
                 and case.updated_at > case.created_at
             ):
                 matching_cases.append(case)
@@ -77,13 +82,24 @@ def get_completed_cases():
 @login_required
 def patient_queue():
     """ Gets patients in queue """
-    subquery = session.query(Case.patient_id)\
-        .filter(Case.updated_at == Case.created_at).subquery()
-    subquery_select = select([subquery.c.patient_id])
-    patients = session.query(Patient)\
-        .filter(Patient.updated_at == func.current_date())\
-        .filter(Patient.id.in_(subquery_select)).all()
-    patients_data = [patient.to_dict() for patient in patients]
+    case_alias = aliased(Case)
+
+    patients_with_cases = (
+        session.query(Patient, case_alias)
+        .outerjoin(case_alias, and_(
+            case_alias.patient_id == Patient.id,
+            case_alias.updated_at == case_alias.created_at
+        ))
+        .filter(func.date(Patient.updated_at) == datetime.utcnow().date())
+        .all()
+    )
+
+    patients_without_cases = [
+        patient for patient, case in patients_with_cases if case is None
+    ]
+
+    patients_data = [patient.to_dict() for patient in patients_without_cases]
+
     response = make_response(jsonify(patients_data))
     response.headers['ETag'] = str(uuid.uuid4())
     return response

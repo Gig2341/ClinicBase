@@ -46,7 +46,7 @@ function handleSearchButtonClick () {
         listItem.appendChild(label);
         radioList.appendChild(listItem);
       });
-      const radioButtons = document.querySelectorAll('input[name="employee"]');
+      const radioButtons = document.querySelectorAll('input[name="patient"]');
       radioButtons.forEach(radio => {
         radio.addEventListener('change', function () {
           patientId = this.value;

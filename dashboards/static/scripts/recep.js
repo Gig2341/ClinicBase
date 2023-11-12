@@ -38,7 +38,7 @@ function searchPatient () {
         listItem.appendChild(label);
         radioList.appendChild(listItem);
       });
-      const radioButtons = document.querySelectorAll('input[name="employee"]');
+      const radioButtons = document.querySelectorAll('input[name="patient"]');
       radioButtons.forEach(radio => {
         radio.addEventListener('change', function () {
           patientId = this.value;
@@ -96,7 +96,7 @@ function handleSendToDoctorRequest () {
   if (patientId) {
     clearRadioList();
 
-    fetch(`https://clinicbase.tech/get_patient/${patientId}`)
+    fetch(`https://clinicbase.tech/api/get_patient/${patientId}`)
       .then(response => response.json())
       .then(data => {
         displayPatientInfo(data, 'Scheduled');
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function getCompletedCases () {
-  fetch('http://clinicbase.tech/cases/completed')
+  fetch('https://clinicbase.tech/api/cases/completed')
     .then(response => {
       return response.json();
     })

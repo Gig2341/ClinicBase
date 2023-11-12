@@ -28,7 +28,7 @@ function getPatientQueue () {
         listItem.appendChild(label);
         radioList.appendChild(listItem);
       });
-      const radioButtons = document.querySelectorAll('input[name="employee"]');
+      const radioButtons = document.querySelectorAll('input[name="patient"]');
       radioButtons.forEach(radio => {
         radio.addEventListener('change', function () {
           patientId = this.value;
@@ -42,7 +42,8 @@ function getPatientQueue () {
     });
 }
 
-function getMedicalRecords (patientId) {
+function getMedicalRecords () {
+  document.getElementById('radio-button-list').innerHTML = '';
   if (patientId) {
     fetch(`https://clinicbase.tech/api/medical_records/${patientId}`)
       .then(response => response.json())
@@ -52,7 +53,8 @@ function getMedicalRecords (patientId) {
   }
 }
 
-function createNewCase (patientId) {
+function createNewCase () {
+  document.getElementById('radio-button-list').innerHTML = '';
   if (patientId) {
     fetch(`https://clinicbase.tech/api/cases/${patientId}`)
       .then(response => {
