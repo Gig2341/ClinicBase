@@ -70,9 +70,9 @@ function createNewCase () {
   }
 }
 
-function initializeSaveHandler () {
-  const saveButton = document.getElementById('saveCaseButton');
-  saveButton.addEventListener('click', function () {
+function initializeHandler (buttonId, actionType) {
+  const button = document.getElementById(buttonId);
+  button.addEventListener('click', function () {
     if (caseId) {
       const allFormInfo = {};
 
@@ -80,86 +80,36 @@ function initializeSaveHandler () {
         const formData = collectFormData(form);
         const hasNonEmptyField = Object.values(formData).some(value => value.trim() !== '');
 
-        if (hasNonEmptyField) {
+        if (hasNonEmptyField && !Object.prototype.hasOwnProperty.call(allFormInfo, sectionName)) {
           allFormInfo[sectionName] = formData;
         }
       }
 
-      collectAndAddFormDataSection('histories', document.getElementById('History'));
-      collectAndAddFormDataSection('examinations', document.getElementById('Examination'));
-      collectAndAddFormDataSection('diagnoses', document.getElementById('Diagnosis'));
-      collectAndAddFormDataSection('drugs', document.getElementById('Medication'));
-      collectAndAddFormDataSection('tests', document.getElementById('Tests'));
-      collectAndAddFormDataSection('lenses', document.getElementById('Lens Prescription'));
+      const tabSections = document.querySelectorAll('.tabcontent');
+      tabSections.forEach(section => {
+        const sectionName = section.id;
+        collectAndAddFormDataSection(sectionName.toLowerCase(), section);
+      });
 
-      // Log the form data for examinations
-      console.log('FormData for Examinations:', allFormInfo['examinations']);
+      console.log(`FormData for ${actionType.charAt(0).toUpperCase() + actionType.slice(1)}:`, allFormInfo[actionType + 's']);
 
-      fetch(`https://clinicbase.tech/api/cases/save/${caseId}/${patientId}`, {
+      fetch(`https://clinicbase.tech/api/cases/${actionType}/${caseId}`, {
         method: 'POST',
         body: JSON.stringify(allFormInfo),
         headers: {
           'Content-Type': 'application/json'
         }
       })
-        .then(response => {
-          return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
           clearFormValues();
           const selectedPatient = fetchedPatientData.find(patient => patient.id === patientId);
 
           if (selectedPatient) {
-            displayPatientInfo(selectedPatient, 'saved');
+            displayPatientInfo(selectedPatient, actionType === 'submit' ? 'submitted' : 'saved');
           }
-        });
-    }
-  });
-}
-
-function initializeSubmitHandler () {
-  const submitButton = document.getElementById('submitCaseButton');
-  submitButton.addEventListener('click', function () {
-    if (caseId) {
-      const allFormInfo = {};
-
-      function collectAndAddFormDataSection (sectionName, form) {
-        const formData = collectFormData(form);
-        const hasNonEmptyField = Object.values(formData).some(value => value.trim() !== '');
-
-        if (hasNonEmptyField) {
-          allFormInfo[sectionName] = formData;
-        }
-      }
-
-      collectAndAddFormDataSection('histories', document.getElementById('History'));
-      collectAndAddFormDataSection('examinations', document.getElementById('Examination'));
-      collectAndAddFormDataSection('diagnoses', document.getElementById('Diagnosis'));
-      collectAndAddFormDataSection('drugs', document.getElementById('Medication'));
-      collectAndAddFormDataSection('tests', document.getElementById('Tests'));
-      collectAndAddFormDataSection('lenses', document.getElementById('Lens Prescription'));
-
-      // Log the form data for examinations
-      console.log('FormData for Examinations:', allFormInfo['examinations']);
-
-      fetch(`https://clinicbase.tech/api/cases/submit/${caseId}/${patientId}`, {
-        method: 'POST',
-        body: JSON.stringify(allFormInfo),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(response => {
-          return response.json();
         })
-        .then(data => {
-          clearFormValues();
-          const selectedPatient = fetchedPatientData.find(patient => patient.id === patientId);
-
-          if (selectedPatient) {
-            displayPatientInfo(selectedPatient, 'submitted');
-          }
-        });
+        .catch(error => console.error('Error:', error));
     }
   });
 }
@@ -249,5 +199,5 @@ document.addEventListener('DOMContentLoaded', function () {
 document.getElementById('refreshButton').addEventListener('click', getPatientQueue);
 document.getElementById('patientRecordButton').addEventListener('click', getMedicalRecords);
 document.getElementById('newCaseButton').addEventListener('click', createNewCase);
-initializeSaveHandler();
-initializeSubmitHandler();
+initializeHandler('saveCaseButton', 'save');
+initializeHandler('submitCaseButton', 'submit');
