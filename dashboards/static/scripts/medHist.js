@@ -16,6 +16,8 @@ function handleSearchButtonClick () {
   const searchFilter = document.getElementById('searchFilter').value;
   const radioList = document.getElementById('radio-button-list');
 
+  document.getElementById('medicalRecordsContainer').innerHTML = '';
+
   const requestData = {
     [searchFilter]: searchText
   };
@@ -57,7 +59,7 @@ function handleSearchButtonClick () {
 
 function generateAndPreviewHtml (responseData) {
   const container = document.getElementById('medicalRecordsContainer');
-
+  
   function generateHtmlContent (data) {
     for (const sectionName in data) {
       if (Object.prototype.hasOwnProperty.call(data, sectionName)) {

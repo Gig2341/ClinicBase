@@ -61,72 +61,72 @@
                 </div>
                 <div class="patient-history">
                     <div class="employee-tab">
-                        <button class="tablinks" onclick="openTab(event, 'History')"
+                        <button class="tablinks" onclick="openTab(event, 'histories')"
                             id="defaultOpen">History</button>
-                        <button class="tablinks" onclick="openTab(event,'Examination')">Examination</button>
-                        <button class="tablinks" onclick="openTab(event,'Tests')">Tests</button>
-                        <button class="tablinks" onclick="openTab(event,'Diagnosis')">Diagnosis</button>
-                        <button class="tablinks" onclick="openTab(event,'Medication')">Medication</button>
-                        <button class="tablinks" onclick="openTab(event,'Lens Prescription')">Lens
+                        <button class="tablinks" onclick="openTab(event,'examinations')">Examination</button>
+                        <button class="tablinks" onclick="openTab(event,'tests')">Tests</button>
+                        <button class="tablinks" onclick="openTab(event,'diagnoses')">Diagnosis</button>
+                        <button class="tablinks" onclick="openTab(event,'drugs')">Medication</button>
+                        <button class="tablinks" onclick="openTab(event,'lenses')">Lens
                             Prescription</button>
                     </div>
                     <div class="nav-content">
                         <form id="medicalForm">
-                            <div id="History" class="tabcontent">
+                            <div id="histories" class="tabcontent">
                                 <h3>History</h3>
                                 <label for="p_ocular_hx">POHx:</label>
-                                <textarea id="p_ocular_hx" name="histories[p_ocular_hx]" ></textarea><br><br>
+                                <textarea id="p_ocular_hx" name="p_ocular_hx" ></textarea><br><br>
                                 <label for="p_medical_hx">PMHx:</label>
-                                <textarea id="p_medical_hx" name="histories[p_medical_hx]" ></textarea><br><br>
+                                <textarea id="p_medical_hx" name="p_medical_hx" ></textarea><br><br>
                                 <label for="f_ocular_hx">FOHx:</label>
-                                <textarea id="f_ocular_hx" name="histories[f_ocular_hx]" ></textarea><br><br>
+                                <textarea id="f_ocular_hx" name="f_ocular_hx" ></textarea><br><br>
                                 <label for="f_medical_hx">FMHx:</label>
-                                <textarea id="f_medical_hx" name="histories[f_medical_hx]" ></textarea><br><br>
+                                <textarea id="f_medical_hx" name="f_medical_hx" ></textarea><br><br>
                             </div>
-                            <div id="Examination" class="tabcontent">
+                            <div id="examinations" class="tabcontent">
                                 <h3>Examination</h3>
                                 <label for="visual_acuity">Visual Acuity:</label>
-                                <textarea id="visual_acuity" name="examinations[visual_acuity]" ></textarea><br><br>
+                                <textarea id="visual_acuity" name="visual_acuity" ></textarea><br><br>
                                 <label for="ocular_exam">Ocular Examination:</label>
-                                <textarea id="ocular_exam" name="examinations[ocular_exam]" ></textarea><br><br>
+                                <textarea id="ocular_exam" name="ocular_exam" ></textarea><br><br>
                                 <label for="chief_complaint">Chief Complaint:</label>
-                                <textarea id="chief_complaint" name="examinations[chief_complaint]" ></textarea><br><br>
+                                <textarea id="chief_complaint" name="chief_complaint" ></textarea><br><br>
                                 <label for="on_direct_questions">On Direct Questions:</label>
-                                <textarea id="on_direct_questions" name="examinations[on_direct_questions]"></textarea><br><br>
+                                <textarea id="on_direct_questions" name="on_direct_questions"></textarea><br><br>
                                 <label for="iop">Intraocular Pressure (IOP):</label>
-                                <textarea id="iop" name="examinations[iop]" ></textarea><br><br>
+                                <textarea id="iop" name="iop" ></textarea><br><br>
                                 <label for="blood_pressure">Blood Pressure:</label>
-                                <textarea id="blood_pressure" name="examinations[blood_pressure]" ></textarea><br><br>
+                                <textarea id="blood_pressure" name="blood_pressure"></textarea><br><br>
                             </div>
-                            <div id="Tests" class="tabcontent">
+                            <div id="tests" class="tabcontent">
                                 <h3>Tests</h3>
                                 <label for="retinoscopy">Retinoscopy:</label>
-                                <textarea id="retinoscopy" name="tests[retinoscopy]" ></textarea><br><br>
+                                <textarea id="retinoscopy" name="retinoscopy"></textarea><br><br>
                                 <label for="autorefraction">Autorefraction:</label>
-                                <textarea id="autorefraction" name="tests[autorefraction]" ></textarea><br><br>
+                                <textarea id="autorefraction" name="autorefraction"></textarea><br><br>
                                 <label for="subjective_refraction">Subjective Refraction:</label>
-                                <textarea id="subjective_refraction" name="tests[subjective_refraction]" ></textarea><br><br>
+                                <textarea id="subjective_refraction" name="subjective_refraction"></textarea><br><br>
                                 <label for="other_tests">Other Tests:</label>
-                                <textarea id="other_tests" name="tests[other_tests]" ></textarea><br><br>
+                                <textarea id="other_tests" name="other_tests"></textarea><br><br>
                             </div>
-                            <div id="Diagnosis" class="tabcontent">
+                            <div id="diagnoses" class="tabcontent">
                                 <h3>Diagnosis</h3>
                                 <label for="principal_diagnosis">Principal Diagnosis:</label>
-                                <textarea id="principal_diagnosis" name="diagnoses[principal_diagnosis]" ></textarea><br><br>
+                                <textarea id="principal_diagnosis" name="principal_diagnosis"></textarea><br><br>
                                 <label for="other_diagnosis_1">Other Diagnosis 1:</label>
-                                <textarea id="other_diagnosis_1" name="diagnoses[other_diagnosis_1]"></textarea><br><br>
+                                <textarea id="other_diagnosis_1" name="other_diagnosis_1"></textarea><br><br>
                                 <label for="other_diagnosis_2">Other Diagnosis 2:</label>
-                                <textarea id="other_diagnosis_2" name="diagnoses[other_diagnosis_2]"></textarea><br><br>
+                                <textarea id="other_diagnosis_2" name="other_diagnosis_2"></textarea><br><br>
                             </div>
-                            <div id="Medication" class="tabcontent">
+                            <div id="drugs" class="tabcontent">
                                 <h3>Medication</h3>
                                  <label for="drug">Prescribed Medication:</label>
-                                 <textarea id="drug" name="drugs[drug]" ></textarea>
+                                 <textarea id="drug" name="drug" ></textarea>
                             </div>
-                            <div id="Lens Prescription" class="tabcontent">
+                            <div id="lenses" class="tabcontent">
                                 <h3>Lens Prescription</h3>
                                 <label for="lens_rx">Lens Prescription:</label>
-                                <textarea id="lens_rx" name="lenses[lens_rx]" ></textarea>
+                                <textarea id="lens_rx" name="lens_rx" ></textarea>
                             </div>
                         </form>
                     </div>

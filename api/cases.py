@@ -13,7 +13,7 @@ from models.lens import Lens
 from models.drug import Drug
 from datetime import datetime
 from sqlalchemy import func, select, and_
-from sqlalchemy.orm import aliased
+from sqlalchemy.orm import aliased, joinedload
 import uuid
 from operator import attrgetter
 
@@ -105,9 +105,20 @@ def patient_queue():
 @login_required
 def get_patient_records(patient_id):
     """ Returns the medical records of a patient """
-    cases = session.query(Case).filter(
-        Case.patient_id == patient_id
-    ).order_by(Case.updated_at.desc()).all()
+    cases = (
+        session.query(Case)
+        .options(
+            joinedload(Case.diagnoses),
+            joinedload(Case.examinations),
+            joinedload(Case.histories),
+            joinedload(Case.tests),
+            joinedload(Case.lenses),
+            joinedload(Case.drugs)
+        )
+        .filter(Case.patient_id == patient_id)
+        .order_by(Case.updated_at.desc())
+        .all()
+    )
 
     case_data = [case.to_dict() for case in cases]
     for case in case_data:
@@ -118,7 +129,8 @@ def get_patient_records(patient_id):
     return response
 
 
-@bp_api.route('/cases/save/<case_id>/<patient_id>', methods=['POST'], strict_slashes=False)
+@bp_api.route('/cases/save/<case_id>/<patient_id>', methods=['POST'],
+              strict_slashes=False)
 @login_required
 def save_case(case_id, patient_id):
     """ Saves patient's medical records into a case """
@@ -134,8 +146,8 @@ def save_case(case_id, patient_id):
     if not request.get_json():
         abort(400, description="Not a JSON")
 
-    case = storage.get(Case, case_id)
-    if not case:
+    case_pat = storage.get(Case, case_id)
+    if not case_pat:
         abort(404)
 
     data = request.get_json()
@@ -157,8 +169,9 @@ def save_case(case_id, patient_id):
                         setattr(record, key, value)
                         storage.save()
 
-                record = RecordClass(**record_data)
-                record.save()
+                else:
+                    record = RecordClass(**record_data)
+                    record.save()
                 ret.append(record.to_dict())
 
     return jsonify(ret)
@@ -181,8 +194,8 @@ def submit_case(case_id, patient_id):
     if not request.get_json():
         abort(400, description="Not a JSON")
 
-    case = storage.get(Case, case_id)
-    if not case:
+    case_pat = storage.get(Case, case_id)
+    if not case_pat:
         abort(404)
 
     data = request.get_json()
@@ -209,7 +222,7 @@ def submit_case(case_id, patient_id):
 
                 ret.append(record.to_dict())
 
-    case.updated_at = datetime.utcnow()
+    case_pat.updated_at = datetime.utcnow()
     storage.save()
 
     return jsonify(ret)

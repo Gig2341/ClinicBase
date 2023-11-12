@@ -5,6 +5,7 @@ let fetchedPatientData = [];
 function getPatientQueue () {
   const radioList = document.getElementById('radio-button-list');
 
+  document.getElementById('medicalRecordsContainer').innerHTML = '';
   radioList.innerHTML = '';
 
   fetch('https://clinicbase.tech/api/cases/queue')
@@ -80,7 +81,7 @@ function initializeHandler (buttonId, actionType) {
         const formData = collectFormData(form);
         const hasNonEmptyField = Object.values(formData).some(value => value.trim() !== '');
 
-        if (hasNonEmptyField && !Object.prototype.hasOwnProperty.call(allFormInfo, sectionName)) {
+        if (hasNonEmptyField) {
           allFormInfo[sectionName] = formData;
         }
       }
@@ -91,16 +92,16 @@ function initializeHandler (buttonId, actionType) {
         collectAndAddFormDataSection(sectionName.toLowerCase(), section);
       });
 
-      console.log(`FormData for ${actionType.charAt(0).toUpperCase() + actionType.slice(1)}:`, allFormInfo[actionType + 's']);
-
-      fetch(`https://clinicbase.tech/api/cases/${actionType}/${caseId}`, {
+      fetch(`https://clinicbase.tech/api/cases/${actionType}/${caseId}/${patientId}`, {
         method: 'POST',
         body: JSON.stringify(allFormInfo),
         headers: {
           'Content-Type': 'application/json'
         }
       })
-        .then(response => response.json())
+        .then(response => {
+	 return response.json()
+	})
         .then(data => {
           clearFormValues();
           const selectedPatient = fetchedPatientData.find(patient => patient.id === patientId);
@@ -109,7 +110,6 @@ function initializeHandler (buttonId, actionType) {
             displayPatientInfo(selectedPatient, actionType === 'submit' ? 'submitted' : 'saved');
           }
         })
-        .catch(error => console.error('Error:', error));
     }
   });
 }
@@ -179,6 +179,7 @@ function generateAndPreviewHtml (responseData) {
     }
   }
 
+  container.innerHTML = '';
   generateHtmlContent(responseData);
 }
 

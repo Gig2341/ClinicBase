@@ -10,7 +10,7 @@ class Test(BaseModel, Base):
     __tablename__ = 'tests'
     retinoscopy = Column(String(128))
     autorefraction = Column(String(128))
-    sudjective_refraction = Column(String(128))
+    subjective_refraction = Column(String(128))
     other_tests = Column(String(128))
     patient_id = Column(String(60), ForeignKey('patients.id'), nullable=False)
     case_id = Column(String(60), ForeignKey('cases.id'), nullable=False)
