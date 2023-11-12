@@ -13,7 +13,6 @@ function getPatientQueue () {
     })
     .then(data => {
       fetchedPatientData = data;
-
       data.forEach(patient => {
         const listItem = document.createElement('li');
         const radio = document.createElement('input');
@@ -61,8 +60,12 @@ function createNewCase () {
         return response.json();
       })
       .then(data => {
-        displayPatientInfo(data, 'created');
         caseId = data.id;
+        const selectedPatient = fetchedPatientData.find(patient => patient.id === patientId);
+
+        if (selectedPatient) {
+          displayPatientInfo(selectedPatient, 'created');
+        }
       });
   }
 }
@@ -89,7 +92,10 @@ function initializeSaveHandler () {
       collectAndAddFormDataSection('tests', document.getElementById('Tests'));
       collectAndAddFormDataSection('lenses', document.getElementById('Lens Prescription'));
 
-      fetch(`https://clinicbase.tech/api/cases/save/${caseId}`, {
+      // Log the form data for examinations
+      console.log('FormData for Examinations:', allFormInfo['examinations']);
+
+      fetch(`https://clinicbase.tech/api/cases/save/${caseId}/${patientId}`, {
         method: 'POST',
         body: JSON.stringify(allFormInfo),
         headers: {
@@ -100,8 +106,12 @@ function initializeSaveHandler () {
           return response.json();
         })
         .then(data => {
-          displayPatientInfo(data, 'saved');
           clearFormValues();
+          const selectedPatient = fetchedPatientData.find(patient => patient.id === patientId);
+
+          if (selectedPatient) {
+            displayPatientInfo(selectedPatient, 'saved');
+          }
         });
     }
   });
@@ -129,7 +139,10 @@ function initializeSubmitHandler () {
       collectAndAddFormDataSection('tests', document.getElementById('Tests'));
       collectAndAddFormDataSection('lenses', document.getElementById('Lens Prescription'));
 
-      fetch(`https://clinicbase.tech/api/cases/submit/${caseId}`, {
+      // Log the form data for examinations
+      console.log('FormData for Examinations:', allFormInfo['examinations']);
+
+      fetch(`https://clinicbase.tech/api/cases/submit/${caseId}/${patientId}`, {
         method: 'POST',
         body: JSON.stringify(allFormInfo),
         headers: {
@@ -140,8 +153,12 @@ function initializeSubmitHandler () {
           return response.json();
         })
         .then(data => {
-          displayPatientInfo(data, 'submitted');
           clearFormValues();
+          const selectedPatient = fetchedPatientData.find(patient => patient.id === patientId);
+
+          if (selectedPatient) {
+            displayPatientInfo(selectedPatient, 'submitted');
+          }
         });
     }
   });

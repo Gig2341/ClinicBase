@@ -94,11 +94,7 @@ def patient_queue():
         .all()
     )
 
-    patients_without_cases = [
-        patient for patient, case in patients_with_cases if case is None
-    ]
-
-    patients_data = [patient.to_dict() for patient in patients_without_cases]
+    patients_data = [patient.to_dict() for patient, _ in patients_with_cases]
 
     response = make_response(jsonify(patients_data))
     response.headers['ETag'] = str(uuid.uuid4())
@@ -122,9 +118,9 @@ def get_patient_records(patient_id):
     return response
 
 
-@bp_api.route('/cases/save/<case_id>', methods=['POST'], strict_slashes=False)
+@bp_api.route('/cases/save/<case_id>/<patient_id>', methods=['POST'], strict_slashes=False)
 @login_required
-def save_case(case_id):
+def save_case(case_id, patient_id):
     """ Saves patient's medical records into a case """
     record_type_mapping = {
         'diagnoses': Diagnosis,
@@ -149,16 +145,17 @@ def save_case(case_id):
         for record_type, record_data in data.items():
             if record_type in record_type_mapping:
                 record_data['case_id'] = case_id
-                record_data['patient_id'] = case.patient_id
+                record_data['patient_id'] = patient_id
 
                 RecordClass = record_type_mapping[record_type]
 
-                record = RecordClass.query\
+                record = session.query(RecordClass)\
                     .filter_by(case_id=case_id).first()
 
                 if record:
-                    record.delete()
-                    storage.save()
+                    for key, value in record_data.items():
+                        setattr(record, key, value)
+                        storage.save()
 
                 record = RecordClass(**record_data)
                 record.save()
@@ -167,10 +164,10 @@ def save_case(case_id):
     return jsonify(ret)
 
 
-@bp_api.route('/cases/submit/<case_id>', methods=['POST'],
+@bp_api.route('/cases/submit/<case_id>/<patient_id>', methods=['POST'],
               strict_slashes=False)
 @login_required
-def submit_case(case_id):
+def submit_case(case_id, patient_id):
     """ Submit patient's medical records into a case for closure """
     record_type_mapping = {
         'diagnoses': Diagnosis,
@@ -195,7 +192,7 @@ def submit_case(case_id):
         for record_type, record_data in data.items():
             if record_type in record_type_mapping:
                 record_data['case_id'] = case_id
-                record_data['patient_id'] = case.patient_id
+                record_data['patient_id'] = patient_id
 
                 RecordClass = record_type_mapping[record_type]
 
