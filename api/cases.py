@@ -20,6 +20,24 @@ from operator import attrgetter
 db_storage = DBStorage()
 session = db_storage.reload()
 
+time = "%Y-%m-%dT%H:%M:%S.%f"
+
+
+def serialize_case(case):
+    return {
+        "id": case.id,
+        "patient": case.patient.to_dict(),
+        "optometrist_id": case.optometrist_id,
+        "diagnoses": [diagnosis.to_dict() for diagnosis in case.diagnoses],
+        "examinations": [exam.to_dict() for exam in case.examinations],
+        "histories": [history.to_dict() for history in case.histories],
+        "tests": [test.to_dict() for test in case.tests],
+        "lenses": [lens.to_dict() for lens in case.lenses],
+        "drugs": [drug.to_dict() for drug in case.drugs],
+        "created_at": case.created_at.strftime(time),
+        "updated_at": case.updated_at.strftime(time),
+    }
+
 
 @bp_api.route('/get_case/<case_id>', strict_slashes=False)
 @login_required
@@ -34,46 +52,47 @@ def get_case(case_id):
 @bp_api.route('/cases/<patient_id>', strict_slashes=False)
 @login_required
 def new_case(patient_id):
-    """ Creates a new case """
-    data = {
-        'optometrist_id': current_user.id,
-        'patient_id': patient_id
-    }
-
+    """ Creates a new case or returns existing case for the day """
     existing_case = session.query(Case).filter(
         Case.patient_id == patient_id,
         func.date(Case.created_at) == datetime.utcnow().date()
     ).first()
 
-    if not existing_case:
-        case = Case(**data)
-        case.save()
-        return jsonify(case.to_dict())
-    else:
+    if existing_case:
         return jsonify(existing_case.to_dict())
+
+    data = {
+        'optometrist_id': current_user.id,
+        'patient_id': patient_id
+    }
+
+    case = Case(**data)
+    case.save()
+
+    return jsonify(case.to_dict())
 
 
 @bp_api.route('/cases/completed', methods=['GET'], strict_slashes=False)
 @login_required
 def get_completed_cases():
     """ Gets completed cases with prescription information """
-    patients = session.query(Patient)\
-        .filter(func.date(Patient.updated_at) == datetime.utcnow().date())\
+    cases = session.query(Case) \
+        .options(
+            joinedload(Case.patient),
+            joinedload(Case.lenses),
+            joinedload(Case.drugs)
+        ) \
+        .filter(
+            func.date(Case.updated_at) == datetime.utcnow().date(),
+            Case.updated_at > Case.created_at
+        ) \
         .all()
 
-    matching_cases = []
+    cases.sort(key=attrgetter("updated_at"), reverse=True)
+    recent_cases = cases[:5]
 
-    for patient in patients:
-        for case in patient.cases:
-            if (
-                func.date(case.updated_at) == datetime.utcnow().date()
-                and case.updated_at > case.created_at
-            ):
-                matching_cases.append(case)
-
-    matching_cases.sort(key=attrgetter("updated_at"), reverse=True)
-    recent_case = matching_cases[:5]
-    response = make_response(jsonify([case.to_dict() for case in recent_case]))
+    response_data = [serialize_case(case) for case in recent_cases]
+    response = make_response(jsonify(response_data))
     response.headers['ETag'] = str(uuid.uuid4())
     return response
 
@@ -120,10 +139,7 @@ def get_patient_records(patient_id):
         .all()
     )
 
-    case_data = [case.to_dict() for case in cases]
-    for case in case_data:
-        case.pop("patient_id", None)
-        case.pop("__class__", None)
+    case_data = [serialize_case(case) for case in cases]
 
     response = make_response(jsonify(case_data))
     response.headers['ETag'] = str(uuid.uuid4())
