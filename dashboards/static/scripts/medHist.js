@@ -59,7 +59,7 @@ function handleSearchButtonClick () {
 
 function generateAndPreviewHtml (responseData) {
   const container = document.getElementById('medicalRecordsContainer');
-  
+
   function generateHtmlContent (data) {
     for (const sectionName in data) {
       if (Object.prototype.hasOwnProperty.call(data, sectionName)) {

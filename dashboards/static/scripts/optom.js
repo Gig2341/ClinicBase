@@ -100,8 +100,8 @@ function initializeHandler (buttonId, actionType) {
         }
       })
         .then(response => {
-	 return response.json()
-	})
+          return response.json();
+        })
         .then(data => {
           clearFormValues();
           const selectedPatient = fetchedPatientData.find(patient => patient.id === patientId);
@@ -109,7 +109,7 @@ function initializeHandler (buttonId, actionType) {
           if (selectedPatient) {
             displayPatientInfo(selectedPatient, actionType === 'submit' ? 'submitted' : 'saved');
           }
-        })
+        });
     }
   });
 }
