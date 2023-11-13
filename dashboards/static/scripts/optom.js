@@ -103,11 +103,13 @@ function initializeHandler (buttonId, actionType) {
           return response.json();
         })
         .then(data => {
-          clearFormValues();
           const selectedPatient = fetchedPatientData.find(patient => patient.id === patientId);
 
           if (selectedPatient) {
             displayPatientInfo(selectedPatient, actionType === 'submit' ? 'submitted' : 'saved');
+          }
+          if (actionType === 'submit') {
+            clearFormValues();
           }
         });
     }

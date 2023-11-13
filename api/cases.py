@@ -123,6 +123,7 @@ def get_patient_records(patient_id):
     case_data = [case.to_dict() for case in cases]
     for case in case_data:
         case.pop("patient_id", None)
+        case.pop("__class__", None)
 
     response = make_response(jsonify(case_data))
     response.headers['ETag'] = str(uuid.uuid4())

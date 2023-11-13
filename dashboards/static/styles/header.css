@@ -26,3 +26,7 @@
 .navbar-nav .nav-link {
     padding: 1rem 2rem; /* Adjust the padding as needed */
 }
+
+.bg-turquoise {
+    background-color: #7FFFD4; /* Turquoise Green color */
+}
