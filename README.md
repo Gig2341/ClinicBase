@@ -9,7 +9,7 @@
 - [Getting Started](#getting-started)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
+- [Our Story](#our-story)
 - [License](#license)
 - [Contact](#contact)
 
@@ -132,7 +132,7 @@ The optometrist dashboard, designed for seamless workflow coordination with the 
 - **Access to Previous Medical Records:** Optometrists can access previous medical records of patients, enabling informed and comprehensive patient care.
 
 
-## Our Story: The Inpiration behind [ClinicBase](https://clinicbase.tech/)
+## Our Story
 
 ### Student-Led Innovation in Eye Healthcare
 
