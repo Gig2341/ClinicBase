@@ -27,6 +27,13 @@
     padding: 1rem 2rem; /* Adjust the padding as needed */
 }
 
+/* Highlight the active link */
+.navbar-nav .nav-link.active {
+    border-radius: 5px; /* Add rounded corners */
+    font-weight: bold; /* Increase font weight for emphasis */
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
 .bg-turquoise {
     background-color: #7FFFD4; /* Turquoise Green color */
 }

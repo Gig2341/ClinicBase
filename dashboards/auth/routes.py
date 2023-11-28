@@ -41,7 +41,7 @@ def login():
         else:
             flash('Login failed. Please check your credentials.', 'danger')
 
-    return render_template('login.html')
+    return render_template('login.html', current_page='login')
 
 
 @bp_auth.route('/logout', strict_slashes=False)

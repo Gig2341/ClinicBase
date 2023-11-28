@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm bg-turquoise navbar-light">
+        <nav class="navbar fixed-top navbar-expand-sm bg-turquoise navbar-light">
             <div class="container-fluid">
                 <a class="navbar-brand" style="color: #333;" href="/">ClinicBase</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
@@ -29,7 +29,7 @@
                             <a class="nav-link" style="color: #333;" href="{{ url_for('main.contact') }}">Contact</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" style="color: #333;" href="{{ url_for('auth.login') }}">Login</a>
+                            <a class="nav-link {% if current_page == 'login' %}active{% endif %}" style="color: #333;" href="{{ url_for('auth.login') }}">Login</a>
                         </li>
                     </ul>
                 </div>
@@ -51,7 +51,7 @@
                     {% endwith %}
                 </div>
             </div>
-            <h2>Login Here</h2>
+            <h3 class="mt-4">Login Here</h3>
             <form method="POST" action="" id="login" name="login">
                 <div class="mb-3 mt-3">
                     <label for="email">Email:</label>

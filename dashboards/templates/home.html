@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm bg-turquoise navbar-light">
+        <nav class="navbar fixed-top navbar-expand-sm bg-turquoise navbar-light">
             <div class="container-fluid">
                 <a class="navbar-brand" style="color: #333;" href="/">ClinicBase</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
@@ -20,7 +20,7 @@
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" style="color: #333;" href="{{ url_for('main.home') }}">Home</a>
+                            <a class="nav-link {% if current_page == 'home' %}active{% endif %}" style="color: #333;" href="{{ url_for('main.home') }}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color: #333;" href="{{ url_for('main.about') }}">About</a>
